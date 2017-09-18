@@ -148,7 +148,7 @@ def login(username, password):
     url = 'https://mp.weixin.qq.com/cgi-bin/home?t=home/index&token=' + token + '&lang=zh_CN'
     login_page = session.get(url, headers=headers)
     # print(login_page.text)
-    pattern = r'ticket:"([^"]*)",'
+    pattern = r'ticket[\s]*:[\s]*"([^"]*)",'
     global ticket
     ticket = re.findall(pattern, login_page.text)
     ticket = ticket[0]
