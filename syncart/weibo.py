@@ -177,7 +177,7 @@ def upload_img(img_file):
     headers_pic = {
 
         'Host': 'picupload.service.weibo.com',
-        'Referer': 'http://weibo.com/ttarticle/p/editor',
+        'Referer': 'https://weibo.com/ttarticle/p/editor',
         'User-Agent': agent
     }
 
@@ -190,10 +190,10 @@ def upload_img(img_file):
     }
 
     login_page = session.post(post_url, files=files, headers=headers_pic, allow_redirects=False);
-    
+
     pattern = r'"pid":"(.*?)"'
     pid = re.findall(pattern, login_page.text)[0]
-    img_new_url = 'http://wx3.sinaimg.cn/large/' + pid + '.jpg'
+    img_new_url = 'https://wx3.sinaimg.cn/large/' + pid + '.jpg'
 
     return img_new_url
 
@@ -232,7 +232,7 @@ def pub(file_parent_path, folder):
 
     print(init.cover)
     weibo_cover_url = upload_img(init.cover['file_path'])
-    
+
 
 
     agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
@@ -240,8 +240,9 @@ def pub(file_parent_path, folder):
     headers_art = {
 
         'Host': 'weibo.com',
-        'Referer': 'http://weibo.com/ttarticle/p/editor',
+        'Referer': 'https://weibo.com/ttarticle/p/editor',
         'User-Agent': agent,
+        'Origin': 'https://weibo.com',
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     }
 
@@ -252,9 +253,10 @@ def pub(file_parent_path, folder):
         'content': file_html_content
     }
 
-    post_url = 'http://weibo.com/ttarticle/p/aj/draft?ajwvr=6'
+    post_url = 'https://weibo.com/ttarticle/p/aj/draft?ajwvr=6'
     login_page = session.post(post_url, data=data, headers=headers_art)
 
+    print(data)
     print(login_page.text)
     res = eval(login_page.text)
     print(res['msg'])
