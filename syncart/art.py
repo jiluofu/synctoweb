@@ -135,7 +135,7 @@ def get_imgs(file_parent_path, folder, site):
         if img_files[i] in img_file_url:
             file_html_content = file_html_content.replace(img_file_url[img_files[i]], img_file_new_url[img_files[i]])
 
-    file_html_content = re.sub(r'<img src="([^\?]*?)\?(.*?)"([^<>]*?)/>', '<img src="\\1">', file_html_content)
+    file_html_content = re.sub(r'<img src="([^\?]*?)\?(.*?)"([^<>]*?)/>', '<img src="\\1"/>', file_html_content)
 
     # 上传到指定网址后，生成对应的index_xxx.md
     index_file_new = open(file_pre + 'index_' + site + '.html', 'w', encoding='utf-8')

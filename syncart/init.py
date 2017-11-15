@@ -89,9 +89,9 @@ def fetch_url(root_path, url, no_cover = False):
     
     pattern = r'<img data-original-src="([^"]*?)"[^<>]*?/>'
     content_html = re.sub(pattern, '<img src="\\1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>', content_html)
-
     
-    print(content_html)
+    content_html = re.sub(r'<div[^<>]*?>', '', content_html)
+    content_html = content_html.replace('</div>', '')
 
     imgs = get_imgs(content_html)
     for i in range(0, len(imgs)):
