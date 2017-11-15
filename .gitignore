@@ -1,2 +1,4 @@
 __pycache__
 syncart/sync.conf
+*.jpg
+cookies_*
