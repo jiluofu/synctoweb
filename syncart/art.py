@@ -87,6 +87,14 @@ def get_imgs(file_parent_path, folder, site):
 
     # 得到所有就图片url的数组
     img_urls = re.findall(pattern, file_content)
+    print(file_content)
+    # if len(img_urls) == 0:
+    #     pattern_img = r'<img data-original-src="([^"]*?)"[^<>]*?/>'
+    #     img_urls = re.findall(pattern_img, file_content)
+    #     #?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240
+    #     for i in range(0, len(img_urls)):
+    #         img_urls[i] = img_urls[i] + '?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
+
 
     # 遍历找对应关系
     img_file_url = {};

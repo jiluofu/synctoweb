@@ -84,7 +84,16 @@ def fetch_url(root_path, url, no_cover = False):
 
     img_dir_path = dir_path + os.sep + 'img'
     os.mkdir(img_dir_path)
-    imgs = get_imgs(content.html())
+
+    content_html = content.html()
+    
+    pattern = r'<img data-original-src="([^"]*?)"[^<>]*?/>'
+    content_html = re.sub(pattern, '<img src="\\1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>', content_html)
+
+    
+    print(content_html)
+
+    imgs = get_imgs(content_html)
     for i in range(0, len(imgs)):
         pattern = r'/([^\?\/]*)\?[^\?\/]*/'
 
@@ -104,13 +113,13 @@ def fetch_url(root_path, url, no_cover = False):
             print(img_file_name)
 
     index_html_path = dir_path + os.sep + 'index.html'
-    file_content = content.html()
+    file_content = content_html
     index_file_new = open(index_html_path, 'w', encoding='utf-8')
     index_file_new.write(file_content)
     index_file_new.close()
 
     index_md_path = dir_path + os.sep + 'index.md'
-    file_content = html_to_mk(content.html())
+    file_content = html_to_mk(content_html)
 
 
     # 查找封面图
@@ -162,7 +171,7 @@ def get_cover(index_md_content, img_dir_path):
 def get_qsj_folder(file_parent_path, qsj_url):
     
     qsj_folder = {}
-    print(111)
+
     print(qsj_url)
     qsj_folder['folder'] = fetch_url(file_parent_path + os.path.sep + 'tmp', qsj_url, True)
 
@@ -174,7 +183,12 @@ def get_imgs(html):
     
     pattern = r'<img src="([^"]*?)"[^<>]*?/>'
     imgs = re.findall(pattern, html)
-    # print(imgs)
+    # if len(imgs) == 0:
+    #     pattern = r'<img data-original-src="([^"]*?)"[^<>]*?/>'
+    #     imgs = re.findall(pattern, html)
+    #     #?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240
+    #     for i in range(0, len(imgs)):
+    #         imgs[i] = imgs[i] + '?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
     return imgs
     
 def html_to_mk(html):
@@ -256,6 +270,13 @@ def get_folder_imgs(file_parent_path, folder, img_file_new_url, site):
 
     # 得到所有就图片url的数组
     img_urls = re.findall(pattern, file_content)
+    # if len(img_urls) == 0:
+    #     pattern_img = r'<img data-original-src="([^"]*?)"[^<>]*?/>'
+    #     img_urls = re.findall(pattern_img, file_content)
+    #     #?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240
+    #     for i in range(0, len(img_urls)):
+    #         img_urls[i] = img_urls[i] + '?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
+
 
     # 遍历找对应关系
     img_file_url = {};
