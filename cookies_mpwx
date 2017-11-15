@@ -1,0 +1,5 @@
+#LWP-Cookies-2.0
+Set-Cookie3: mm_lang=zh_CN; path="/"; domain="mp.weixin.qq.com"; path_spec; secure; expires="2106-02-07 06:28:15Z"; version=0
+Set-Cookie3: openid2ticket_oszp5t1gbDqv4zsK1IHauxta-5Ow="meGy0sqNYfe8YZN/2gO062hVH4q4uA7EqY212H+gvns="; path="/"; domain="mp.weixin.qq.com"; path_spec; secure; expires="2017-12-15 22:51:03Z"; HttpOnly=None; version=0
+Set-Cookie3: ua_id="JCGz1er0OYPLZoiwAAAAAPfMZ7FR3Krog8np_yB80U8="; path="/"; domain="mp.weixin.qq.com"; path_spec; secure; expires="2038-01-19 03:14:07Z"; HttpOnly=None; version=0
+Set-Cookie3: xid=6509e7e0c40ddc012228ca52e546468c; path="/"; domain="mp.weixin.qq.com"; path_spec; secure; expires="2038-01-19 03:14:07Z"; HttpOnly=None; version=0
