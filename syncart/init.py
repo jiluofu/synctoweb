@@ -133,7 +133,7 @@ def fetch_url(root_path, url, no_cover = False):
 
     return dir_name
 def get_cover(index_md_content, img_dir_path):
-    pattern = r']\(([^\(\)]*)\)封面'
+    pattern = r']\(([^\(\)]*)\)[\s]*封面'
     imgs = re.findall(pattern, index_md_content)
 
     if len(imgs) > 0:
