@@ -239,10 +239,10 @@ def pub(file_parent_path, folder):
 
     headers_art = {
 
-        'Host': 'weibo.com',
-        'Referer': 'https://weibo.com/ttarticle/p/editor',
+        'Host': 'www.weibo.com',
+        'Referer': 'https://www.weibo.com/ttarticle/p/editor',
         'User-Agent': agent,
-        'Origin': 'https://weibo.com',
+        'Origin': 'https://www.weibo.com',
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     }
 
@@ -253,7 +253,7 @@ def pub(file_parent_path, folder):
         'content': file_html_content
     }
 
-    post_url = 'https://weibo.com/ttarticle/p/aj/draft?ajwvr=6'
+    post_url = 'https://www.weibo.com/ttarticle/p/aj/draft?ajwvr=6'
     login_page = session.post(post_url, data=data, headers=headers_art)
 
     print(data)
