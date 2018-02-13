@@ -1,4 +1,4 @@
-#!/Library/Frameworks/Python.framework/Versions/3.5/bin/python3
+#!/usr/local/bin/python3
 # from syncart import  art
 from syncart import  init
 
