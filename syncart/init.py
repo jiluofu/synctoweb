@@ -59,6 +59,7 @@ def fetch_url(root_path, url, no_cover = False):
     html = re.sub(r'@JeanneQ[^>]*', '', html)
     # print(html)
     pattern = r'<h1 class="title">(.*?)</h1>'
+    print(html)
     title = re.findall(pattern, html)[0]
     print(title)
 
@@ -91,13 +92,14 @@ def fetch_url(root_path, url, no_cover = False):
     
     pattern = r'<img data-original-src="([^"]*?)"[^<>]*?/>'
     content_html = re.sub(pattern, '<img src="\\1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>', content_html)
-    content_html = content_html.replace('<img src="https://github.com/jiluofu/jiluofu.github.com/raw/master/momiaojushi/static/qrcode.jpg" data-original-src="https://github.com/jiluofu/jiluofu.github.com/raw/master/momiaojushi/static/qrcode.jpg"/>', '')
+    # content_html = content_html.replace('<img src="https://github.com/jiluofu/jiluofu.github.com/raw/master/momiaojushi/static/qrcode.jpg" data-original-src="https://github.com/jiluofu/jiluofu.github.com/raw/master/momiaojushi/static/qrcode.jpg"/>', '')
+    content_html = re.sub(r'<([^<>]*?)qrcode([^<>]*?)/>', '', content_html)
     
 
     content_html = re.sub(r'<div[^<>]*?>', '', content_html)
     content_html = content_html.replace('</div>', '')
 
-    print(content_html)
+    # print(content_html)
     imgs = get_imgs(content_html)
     
     for i in range(0, len(imgs)):
