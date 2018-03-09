@@ -132,6 +132,11 @@ def fetch_url(root_path, url, no_cover = False):
     index_file_new.write(file_content)
     index_file_new.close()
 
+    index_git_md_path = dir_path + os.sep + 'index_git.md'
+    index_file_new = open(index_git_md_path, 'w', encoding='utf-8')
+    index_file_new.write(file_content.replace('//upload-images.jianshu.io/upload_images/', 'img/'))
+    index_file_new.close()
+
     
 
     return dir_name
