@@ -59,7 +59,7 @@ def fetch_url(root_path, url, no_cover = False):
     html = re.sub(r'@JeanneQ[^>]*', '', html)
     # print(html)
     pattern = r'<h1 class="title">(.*?)</h1>'
-    print(html)
+    # print(html)
     title = re.findall(pattern, html)[0]
     print(title)
 
@@ -70,7 +70,7 @@ def fetch_url(root_path, url, no_cover = False):
 
     p = d.find('p');
     date = p.eq(0).text()
-    print(date)
+    # print(date)
 
 
     dir_name = title.replace('.', '_' + date.replace('.', '') + '_')
