@@ -367,7 +367,8 @@ def pub(file_parent_path, folder, qsj_folder_arr, url):
         'title0': title,
         'content0': file_html_content,
         'digest0': '',
-        'author0': '喵爸',
+        'author0': '摹喵居士',
+        'writerid0': '2912645',
         'fileid0': '',
         'cdn_url0': mpwx_cover_url,
         'music_id0': '',
@@ -400,7 +401,8 @@ def pub(file_parent_path, folder, qsj_folder_arr, url):
         num = str(i + 1)
         data['title' + num] = '喵妈 | ' + qsj_folder_arr[i]['folder']
         data['content' + num] = qsj_file_html_content
-        data['author' + num] = '喵妈'
+        data['author' + num] = '摹喵居士'
+        data['writerid' + num] = '2912645'
         data['cdn_url' + num] = qsj_cover_arr[i]['cover_url']
 
         # data['fee' + num] = 1
