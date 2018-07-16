@@ -257,9 +257,38 @@ def pub(file_parent_path, folder):
     login_page = session.post(post_url, data=data, headers=headers_art)
 
     print(data)
-    print(login_page.text)
-    res = eval(login_page.text)
+    # print(login_page.text)
+    res = json.loads(login_page.text)
     print(res['msg'])
+    pub_id = res['data']['id']
+
+
+    # setpayinfo
+    data = {
+
+        'id': pub_id,
+        'pay_setting': '{"pid":"38001557","isreward":1,"isvclub":0,"ispay":0}'
+
+    }
+    post_url = 'https://card.weibo.com/article/v3/aj/editor/settings/setpayinfo'
+    login_page = session.post(post_url, data=data, headers=headers_art)
+    res = json.loads(login_page.text)
+    print(res)
+
+    # 发布
+    data = {
+
+        'id': pub_id,
+        'text': '发布了头条文章：《' + title + '》',
+        'follow_to_read': 1,
+        'follow_official': 0,
+        'sync_wb': 0,
+        'is_original': 0
+    }
+    post_url = 'https://card.weibo.com/article/v3/aj/editor/draft/publish'
+    login_page = session.post(post_url, data=data, headers=headers_art)
+    res = json.loads(login_page.text)
+    print(res)
 
 
 

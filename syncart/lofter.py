@@ -156,6 +156,9 @@ def pub(file_parent_path, folder):
     post_url = 'http://www.lofter.com/blog/jiluofu/new/text/'
 
 
+    # seq = (init.lofter_tag, init.lofter_tag_custom)
+    # tag = ','.join(seq)
+    tag = ''
     data = {
 
         'allowView': '0',
@@ -163,10 +166,10 @@ def pub(file_parent_path, folder):
         'blogName': 'jiluofu',
         'cctype': '3',
         'content': file_html_content,
-        'isPublished': 'false',
+        'isPublished': 'true',
         'photoInfo': '[]',
         'syncSites': '',
-        'tag': '',
+        'tag': tag,
         'title': title,
         'valCode': ''
     }

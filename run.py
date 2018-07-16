@@ -83,11 +83,12 @@ for i in range(0, len(qsj)):
     qsj_folder_arr.append(qsj_folder)
 
 
+
 lofter.pub(file_parent_path, folder)
-zhihu.pub(file_parent_path, folder)
-weibo.pub(file_parent_path, folder)
-douban.pub(file_parent_path, folder)
-mpwx.pub(file_parent_path, folder, qsj_folder_arr, url)
+# zhihu.pub(file_parent_path, folder)
+# weibo.pub(file_parent_path, folder)
+# douban.pub(file_parent_path, folder)
+# mpwx.pub(file_parent_path, folder, qsj_folder_arr, url)
 
 
 init.clean_tmp(file_parent_path + os.sep + 'tmp')

@@ -27,6 +27,11 @@ except:
 
 from pyquery import PyQuery as pyq
 import shutil
+import configparser
+
+cf = configparser.RawConfigParser()
+sync_conf_path = os.path.dirname(__file__) + os.path.sep + os.path.sep + 'sync.conf'
+cf.read(sync_conf_path)
 
 agent = 'Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0'
 headers = {
@@ -43,6 +48,8 @@ headers_img = {
     'User-Agent': agent
 }
 
+# lofter_tag = cf.get('lofter', 'tag')
+# lofter_tag_custom = input('lofter 自定义tag，英文逗号分隔>\n')
 
 
 # 使用登录cookie信息
