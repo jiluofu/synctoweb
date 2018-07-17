@@ -155,10 +155,9 @@ def pub(file_parent_path, folder):
 
     post_url = 'http://www.lofter.com/blog/jiluofu/new/text/'
 
-
-    # seq = (init.lofter_tag, init.lofter_tag_custom)
-    # tag = ','.join(seq)
-    tag = ''
+    tagArr = init.getTags(cf.get('lofter', 'tag'))
+    tag = ','.join(tagArr)
+    
     data = {
 
         'allowView': '0',

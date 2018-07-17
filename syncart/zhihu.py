@@ -241,5 +241,64 @@ def pub(file_parent_path, folder):
 
     # 知乎草稿返回结果403时，网页登录发文章页面，把cookie写入header_zhuanlan即可
     print(login_page)
+    res = json.loads(login_page.text)
+    pub_id = res['id']
+
+    post_url = 'https://zhuanlan.zhihu.com/api/posts/' + str(pub_id) + '/topics'
+    data = {
+
+        'id': '20165532',
+        'name': '人文'
+    }
+    data_str = json.dumps(data)
+
+    login_page = session.post(post_url, data=data_str, headers=headers_zhuanlan);
+    res = json.loads(login_page.text)
+    print(res)
+
+    post_url = 'https://zhuanlan.zhihu.com/api/drafts/' + str(pub_id) + '/publish'
+    data = {
+
+        'author': {
+
+            'bio':"学做父亲，个人微信公号：momiaojushi",
+            'description':"开始练笔。",
+            'hash':"152d5c51b3a7976e07f4404945c85238",
+            'isBanned':False,
+            'isFollowed':False,
+            'isFollowing':False,
+            'isOrg':False,
+            'isOrgWhiteList':False,
+            'name':"摹喵居士",
+            'profileUrl':"https://www.zhihu.com/people/jiluofu",
+            'slug':"jiluofu",
+            'uid':26886444941312
+        },
+        'column': {
+
+            'name': '摹喵居士',
+            'slug': 'momiaojushi',
+            'url': '/momiaojushi',
+            'avatar': {
+
+                'id': 'v2-c8a50c3ddd68ad1266ce49061048b68c',
+                'template': 'https://pic1.zhimg.com/{id}_{size}.jpg'
+            }
+        },
+        'commentPermission': 'anyone',
+        'id': '20165532',
+        'isTitleImageFullScreen': False,
+        'sourceUrl': '',
+        'state': 'draft',
+        'title': title,
+        'titleImage': zhihu_cover_url,
+        'updatedTime': ''
+
+    }
+    data_str = json.dumps(data)
+
+    login_page = session.put(post_url, data=data_str, headers=headers_zhuanlan);
+    res = json.loads(login_page.text)
+    print(login_page)
 
 

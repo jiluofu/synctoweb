@@ -346,3 +346,13 @@ def get_folder_imgs(file_parent_path, folder, img_file_new_url, site):
     index_file_new.write(file_html_content)
     index_file_new.close()
 
+def getTags(tags):
+    tagArr = tags.split(',')
+    arr = []
+    pa = r'^-(.*)?'
+    
+    for i in range(0, len(tagArr)):
+        res = re.findall(pa, tagArr[i])
+        if len(res) == 0:
+            arr.append(tagArr[i])
+    return arr
