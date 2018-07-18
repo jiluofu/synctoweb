@@ -244,17 +244,30 @@ def pub(file_parent_path, folder):
     res = json.loads(login_page.text)
     pub_id = res['id']
 
-    post_url = 'https://zhuanlan.zhihu.com/api/posts/' + str(pub_id) + '/topics'
-    data = {
+    tagDic = {
 
-        'id': '20165532',
-        'name': '人文'
+        '阅读': '19550564',
+        '人文': '20165532',
+        '钢琴': '19551861',
+        '儿童': '19551506',
+        '回忆': '19556732',
     }
-    data_str = json.dumps(data)
+    tagArr = init.getTags(cf.get('zhihu', 'tag'))
+    for i in range(0, len(tagArr)):
+        tag = tagDic[tagArr[i]]
+        post_url = 'https://zhuanlan.zhihu.com/api/posts/' + str(pub_id) + '/topics'
+        data = {
 
-    login_page = session.post(post_url, data=data_str, headers=headers_zhuanlan);
-    res = json.loads(login_page.text)
-    print(res)
+            'id': tag,
+            'name': tagArr[i]
+        }
+        data_str = json.dumps(data)
+
+        login_page = session.post(post_url, data=data_str, headers=headers_zhuanlan);
+        res = json.loads(login_page.text)
+        print(res)
+
+    
 
     post_url = 'https://zhuanlan.zhihu.com/api/drafts/' + str(pub_id) + '/publish'
     data = {
