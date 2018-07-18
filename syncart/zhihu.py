@@ -251,6 +251,7 @@ def pub(file_parent_path, folder):
         '钢琴': '19551861',
         '儿童': '19551506',
         '回忆': '19556732',
+        '历史': '19551077',
     }
     tagArr = init.getTags(cf.get('zhihu', 'tag'))
     for i in range(0, len(tagArr)):
