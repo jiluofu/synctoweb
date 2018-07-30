@@ -36,6 +36,9 @@ username = cf.get('zhihu', 'username')
 password = cf.get('zhihu', 'password')
 cookie = cf.get('zhihu', 'cookie')
 
+cfTag = configparser.RawConfigParser()
+cfTag.read(os.path.dirname(__file__) + os.path.sep + 'tag.conf')
+
 agent = 'Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0'
 headers = {
     'Host': 'www.zhihu.com',
@@ -246,14 +249,14 @@ def pub(file_parent_path, folder):
 
     tagDic = {
 
-        '阅读': '19550564',
         '人文': '20165532',
-        '钢琴': '19551861',
         '儿童': '19551506',
+        '阅读': '19550564',
+        '钢琴': '19551861',
         '回忆': '19556732',
         '历史': '19551077',
     }
-    tagArr = init.getTags(cf.get('zhihu', 'tag'))
+    tagArr = init.getTags(cfTag.get('zhihu', 'tag'))
     for i in range(0, len(tagArr)):
         tag = tagDic[tagArr[i]]
         post_url = 'https://zhuanlan.zhihu.com/api/posts/' + str(pub_id) + '/topics'

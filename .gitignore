@@ -1,4 +1,5 @@
 __pycache__
 syncart/sync.conf
+syncart/tag.conf
 *.jpg
 cookies_*

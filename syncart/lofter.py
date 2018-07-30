@@ -26,6 +26,9 @@ cf = configparser.RawConfigParser()
 cf.read(os.path.dirname(__file__) + os.path.sep + 'sync.conf')
 cookie = cf.get('lofter', 'cookie')
 
+cfTag = configparser.RawConfigParser()
+cfTag.read(os.path.dirname(__file__) + os.path.sep + 'tag.conf')
+
 session = requests.session()
 
 agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
@@ -155,7 +158,7 @@ def pub(file_parent_path, folder):
 
     post_url = 'http://www.lofter.com/blog/jiluofu/new/text/'
 
-    tagArr = init.getTags(cf.get('lofter', 'tag'))
+    tagArr = init.getTags(cfTag.get('lofter', 'tag'))
     tag = ','.join(tagArr)
     
     data = {
