@@ -49,6 +49,7 @@ session = requests.session()
 conf_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/syncart/sync.conf'
 chromedriver_path = '/Users/zhuxu/Documents/mmjstool/chromedriver'
 
+
 # global global_note_id
 # global global_upload_auth_token
 # global global_img_file_new_url
@@ -62,7 +63,6 @@ def initial():
     except Exception as e:
         
         cookie = getCookie();
-
 
 def checkLogin():
 
@@ -93,41 +93,42 @@ def checkLogin():
     else:
         return False;
 
+
 def getCookie():
 
-        url = 'https://www.douban.com/'
-        driver = webdriver.Chrome(chromedriver_path)
-        driver.get(url)
-        time.sleep(5)
-        # print(username)
-        driver.find_element_by_id('form_email').send_keys(username)
-        driver.find_element_by_id('form_password').send_keys(password)
+    url = 'https://www.douban.com/'
+    driver = webdriver.Chrome(chromedriver_path)
+    driver.get(url)
+    time.sleep(5)
+    # print(username)
+    driver.find_element_by_id('form_email').send_keys(username)
+    driver.find_element_by_id('form_password').send_keys(password)
 
-        input('去手动登录吧\n>  ')
-        # 网页源码
-        page = driver.page_source
-        # print(page)
+    input('去手动登录吧\n>  ')
+    # 网页源码
+    page = driver.page_source
+    # print(page)
 
-        pattern = r'(摹喵居士)'
-        res = re.findall(pattern, page)
-        # print(res)
+    pattern = r'(摹喵居士)'
+    res = re.findall(pattern, page)
+    # print(res)
 
-        cookies = driver.get_cookies()
-        cookies_str = ''
-        for item in cookies:
-            cookies_str += item['name'] + '=' + item['value'] + ';'
-        cf.set('douban', 'cookie', cookies_str)
-        fp = open(conf_path, 'w')
-        cf.write(fp)
-        fp.close()
-        cf.read(conf_path)
+    cookies = driver.get_cookies()
+    cookies_str = ''
+    for item in cookies:
+        cookies_str += item['name'] + '=' + item['value'] + ';'
+    cf.set('douban', 'cookie', cookies_str)
+    fp = open(conf_path, 'w')
+    cf.write(fp)
+    fp.close()
+    cf.read(conf_path)
 
 
 
-        # 关闭浏览器
-        driver.close()
+    # 关闭浏览器
+    driver.close()
 
-        return cookies_str
+    return cookies_str
 
 def get_upload_img_data():
 
@@ -170,7 +171,7 @@ def upload_img(img_file_path):
 
     data = {
 
-        'ck': 'cHzd',
+        'ck': ck,
         'note_id': global_note_id,
         'folder': '/note/',
         'upload_auth_token': global_upload_auth_token
@@ -356,6 +357,27 @@ def pub(file_parent_path, folder):
 
     initial()
 
+    headers_douban = {
+
+        'Host': 'www.douban.com',
+        'Origin': 'https://www.douban.com',
+        'Referer': 'https://www.douban.com/note/create',
+        'User-Agent': agent,
+        # 'Content-Type': 'application/json;charset=UTF-8',
+        'Cookie': cf.get('douban', 'cookie')
+
+    }
+
+    url = 'https://www.douban.com/'
+    login_page = session.get(url, headers=headers_douban, allow_redirects=False);
+    pattern = r'name="ck" value="([^"]*)"'
+    res = re.findall(pattern, login_page.text)
+    global ck
+    ck = res[0]
+    print(111)
+    print(ck)
+
+
     global global_img_file_new_url
     global_img_file_new_url = get_img_file_new_url(file_parent_path, folder)
     
@@ -375,16 +397,7 @@ def pub(file_parent_path, folder):
 
     # return
     post_url = 'https://www.douban.com/j/note/publish'
-    headers_douban = {
-
-        'Host': 'www.douban.com',
-        'Origin': 'https://www.douban.com',
-        'Referer': 'https://www.douban.com/note/create',
-        'User-Agent': agent,
-        # 'Content-Type': 'application/json;charset=UTF-8',
-        'Cookie': cf.get('douban', 'cookie')
-
-    }
+    
 
     data = {
 
@@ -399,7 +412,7 @@ def pub(file_parent_path, folder):
         'accept_donation': 'on',
         'donation_notice': '沽之哉，沽之哉！我待贾者也',
         'is_original': 'on',
-        'ck': 'cHzd',
+        'ck': ck,
         'action': 'new',
         # 'captcha-id':'O7cFkbicukr62rX7C3l0BlmD:en',
         # 'captcha-solution':'stomach'
