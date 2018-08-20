@@ -240,28 +240,34 @@ def pub(file_parent_path, folder):
     headers_art = {
 
         'Host': 'www.weibo.com',
-        'Referer': 'https://www.weibo.com/ttarticle/p/editor',
+        'Referer': 'https://card.weibo.com/article/v3/editor',
         'User-Agent': agent,
-        'Origin': 'https://www.weibo.com',
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        'Origin': 'https://card.weibo.com',
+        'Content-Type': 'application/x-www-form-urlencoded;'
     }
 
     data = {
 
         'title': title,
-        'image': weibo_cover_url,
-        'content': file_html_content
+        'cover': weibo_cover_url,
+        'content': file_html_content,
+        'type': 'draft'
     }
 
-    post_url = 'https://www.weibo.com/ttarticle/p/aj/draft?ajwvr=6'
+    print(111111)
+    print(data['content'])
+
+    # post_url = 'https://www.weibo.com/ttarticle/p/aj/draft?ajwvr=6'
+    post_url = 'https://card.weibo.com/article/v3/aj/editor/draft/create'
     login_page = session.post(post_url, data=data, headers=headers_art)
 
     print(data)
     # print(login_page.text)
     res = json.loads(login_page.text)
     print(res['msg'])
+    
     pub_id = res['data']['id']
-
+    print('###pub_id:' + pub_id)
 
     # setpayinfo
     data = {
@@ -274,6 +280,30 @@ def pub(file_parent_path, folder):
     login_page = session.post(post_url, data=data, headers=headers_art)
     res = json.loads(login_page.text)
     print(res)
+
+    data = {
+
+        'id': pub_id,
+        'title': title,
+        'status': 0,
+        'isvclub': 0,
+        'ispay': 0,
+        'error_code': 0,
+        'cover': weibo_cover_url,
+        'content': file_html_content,
+        'is_word': 0
+        
+    }
+
+    # post_url = 'https://www.weibo.com/ttarticle/p/aj/draft?ajwvr=6'
+    post_url = 'https://card.weibo.com/article/v3/aj/editor/draft/save'
+    login_page = session.post(post_url, data=data, headers=headers_art)
+
+    print(data)
+    # print(login_page.text)
+    res = json.loads(login_page.text)
+    print(res)
+    print(2222)
 
     # 发布
     data = {
