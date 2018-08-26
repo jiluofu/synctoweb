@@ -304,7 +304,7 @@ def pub(file_parent_path, folder):
     res = json.loads(login_page.text)
     print(res)
     print(2222)
-
+    time.sleep(2)
     # 发布
     data = {
 
