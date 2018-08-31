@@ -4004,6 +4004,8 @@
 function getArtContents () {
 
 	var eles = document.getElementsByClassName('title');
+  var abs = document.getElementsByClassName('abstract');
+  
 
 	var arr = [];
 	var titleArr = [];
@@ -4015,7 +4017,13 @@ function getArtContents () {
 		
 		if (re.test(eles[i].innerHTML)) {
 
-			arr.push('<li><a target="_blank" href="https://github.com/jiluofu/momiaojushi/blob/master/archive/' + eles[i].innerHTML + '/index_git.md">' + eles[i].innerHTML + '</a>&nbsp;&nbsp;<a href="https://www.jianshu.com' + eles[i].getAttribute('href') + '" target="_blank">https://www.jianshu.com' + eles[i].getAttribute('href') + '</a></li>');
+      var dateStr = abs[i].innerHTML.match(/(\d\d\d\d\.\d\d\.\d\d)/)[0];
+      dateStr = dateStr.replace(/\./g, '');
+      
+      var titlePath = eles[i].innerHTML;
+      titlePath = titlePath.replace('.', '_' + dateStr + '_');
+
+			arr.push('<li><a target="_blank" href="https://github.com/jiluofu/momiaojushi/blob/master/archive/' + titlePath + '/index_git.md">' + eles[i].innerHTML + '</a>&nbsp;&nbsp;<a href="https://www.jianshu.com' + eles[i].getAttribute('href') + '" target="_blank">https://www.jianshu.com' + eles[i].getAttribute('href') + '</a></li>');
 			titleArr.push('"' + eles[i].innerHTML + '"');
 			urlArr.push('"https://www.jianshu.com' + eles[i].getAttribute('href') + '"');
 		}
