@@ -20,7 +20,10 @@ import os.path
 
 from syncart import init
 import configparser
+from selenium import webdriver
 
+conf_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/syncart/sync.conf'
+chromedriver_path = '/Users/zhuxu/Documents/mmjstool/chromedriver'
 
 cf = configparser.RawConfigParser()
 cf.read(os.path.dirname(__file__) + os.path.sep + 'sync.conf')
@@ -42,7 +45,76 @@ headers = {
 
 }
 
+def initial():
 
+    print('init lofter')
+    try:
+        if checkLogin() != True:
+            cookie = getCookie();
+    except Exception as e:
+        
+        cookie = getCookie();
+
+def checkLogin():
+
+    url = 'http://www.lofter.com/login?urschecked=true'
+    headers_lofter = {
+
+        'Host': 'www.lofter.com',
+        'Origin': 'http://www.lofter.com',
+        'Referer': 'http://www.lofter.com',
+        'User-Agent': agent,
+        'Content-Type': 'text/html;charset=UTF-8',
+        'Cookie': cookie
+
+    }
+
+
+
+    # 通过get_url，使得session获得专栏的cookie，里面有X-XSRF-TOKEN
+    login_page = session.get(url, headers=headers_lofter, allow_redirects=False);
+
+    pattern = r'摹喵居士'
+    res = re.findall(pattern, login_page.text)
+    if len(res) > 0:
+        print('lofter cookie is ok.')
+        return True;
+    else:
+        return False;
+
+
+def getCookie():
+
+    url = 'http://www.lofter.com/'
+    driver = webdriver.Chrome(chromedriver_path)
+    driver.get(url)
+    
+
+    input('去手动登录吧\n>  ')
+    # 网页源码
+    page = driver.page_source
+    # print(page)
+
+    pattern = r'(摹喵居士)'
+    res = re.findall(pattern, page)
+    # print(res)
+
+    cookies = driver.get_cookies()
+    cookies_str = ''
+    for item in cookies:
+        cookies_str += item['name'] + '=' + item['value'] + ';'
+    cf.set('lofter', 'cookie', cookies_str)
+    fp = open(conf_path, 'w')
+    cf.write(fp)
+    fp.close()
+    cf.read(conf_path)
+
+
+
+    # 关闭浏览器
+    driver.close()
+
+    return cookies_str
 
 
 def upload_img(img_file):
@@ -126,6 +198,8 @@ def get_img_file_new_url(file_parent_path, folder):
     return img_file_new_url
 
 def pub(file_parent_path, folder):
+
+    initial()
 
     img_file_new_url = get_img_file_new_url(file_parent_path, folder)
     init.get_folder_imgs(file_parent_path, folder, img_file_new_url, 'lofter')
