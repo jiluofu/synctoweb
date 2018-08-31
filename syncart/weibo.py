@@ -31,6 +31,10 @@ from syncart import init
 import json
 import string
 import configparser
+from selenium import webdriver
+
+conf_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/syncart/sync.conf'
+chromedriver_path = '/Users/zhuxu/Documents/mmjstool/chromedriver'
 
 '''
 如果没有开启登录保护，不用输入验证码就可以登录
@@ -41,12 +45,84 @@ cf = configparser.RawConfigParser()
 cf.read(os.path.dirname(__file__) + os.path.sep + 'sync.conf')
 username = cf.get('weibo', 'username')
 password = cf.get('weibo', 'password')
+cookie = cf.get('weibo', 'cookie')
 
 # 构造 Request headers
 agent = 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0'
 headers = {
     'User-Agent': agent
 }
+
+
+def initial():
+
+    print('init weibo')
+    try:
+        if checkLogin() != True:
+            cookie = getCookie();
+    except Exception as e:
+        
+        cookie = getCookie();
+
+def checkLogin():
+
+    url = 'http://login.sina.com.cn/signup/signin.php'
+    headers_weibo = {
+
+        'Host': 'login.sina.com.cn',
+        # 'Origin': 'https://www.weibo.com',
+        # 'Referer': 'https://www.weibo.com',
+        'User-Agent': agent,
+        # 'Content-Type': 'text/html;charset=UTF-8',
+        'Cookie': cookie
+
+    }
+
+
+
+    # 通过get_url，使得session获得专栏的cookie，里面有X-XSRF-TOKEN
+    login_page = session.get(url, headers=headers_weibo, allow_redirects=False);
+    
+    pattern = r'my.sina.com.cn'
+    res = re.findall(pattern, login_page.text)
+    if len(res) > 0:
+        print('weibo cookie is ok.')
+        return True;
+    else:
+        return False;
+
+
+def getCookie():
+
+    url = 'https://www.weibo.com'
+    driver = webdriver.Chrome(chromedriver_path)
+    driver.get(url)
+    # time.sleep(5)
+    # # print(username)
+    # driver.find_element_by_id('username').send_keys(username)
+    # driver.find_element_by_id('password').send_keys(password)
+
+    input('去手动登录吧\n>  ')
+    # 网页源码
+    # page = driver.page_source
+    # print(page)
+
+    cookies = driver.get_cookies()
+    cookies_str = ''
+    for item in cookies:
+        cookies_str += item['name'] + '=' + item['value'] + ';'
+    cf.set('weibo', 'cookie', cookies_str)
+    fp = open(conf_path, 'w')
+    cf.write(fp)
+    fp.close()
+    cf.read(conf_path)
+
+
+
+    # 关闭浏览器
+    driver.close()
+
+    return cookies_str
 
 session = requests.session()
 
@@ -178,7 +254,8 @@ def upload_img(img_file):
 
         'Host': 'picupload.service.weibo.com',
         'Referer': 'https://weibo.com/ttarticle/p/editor',
-        'User-Agent': agent
+        'User-Agent': agent,
+        'Cookie': cf.get('weibo', 'cookie')
     }
 
     post_url = 'http://picupload.service.weibo.com/interface/pic_upload.php?mime=image%2Fjpeg&marks=1&app=miniblog&url=0&markpos=1&logo=&nick='
@@ -215,7 +292,8 @@ def get_img_file_new_url(file_parent_path, folder):
 
 def pub(file_parent_path, folder):
 
-    login(username, password)
+    # login(username, password)
+    initial()
 
     img_file_new_url = get_img_file_new_url(file_parent_path, folder)
     init.get_folder_imgs(file_parent_path, folder, img_file_new_url, 'weibo')
@@ -243,7 +321,8 @@ def pub(file_parent_path, folder):
         'Referer': 'https://card.weibo.com/article/v3/editor',
         'User-Agent': agent,
         'Origin': 'https://card.weibo.com',
-        'Content-Type': 'application/x-www-form-urlencoded;'
+        'Content-Type': 'application/x-www-form-urlencoded;',
+        'Cookie': cf.get('weibo', 'cookie')
     }
 
     data = {
@@ -254,7 +333,6 @@ def pub(file_parent_path, folder):
         'type': 'draft'
     }
 
-    print(111111)
     print(data['content'])
 
     # post_url = 'https://www.weibo.com/ttarticle/p/aj/draft?ajwvr=6'
@@ -303,7 +381,6 @@ def pub(file_parent_path, folder):
     # print(login_page.text)
     res = json.loads(login_page.text)
     print(res)
-    print(2222)
     time.sleep(2)
     # 发布
     data = {
