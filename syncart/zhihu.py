@@ -131,14 +131,17 @@ def getCookie():
 def upload_img(img_file_path):
 
     # 构造要发布的图片文件
-    files = {'upload_file': open(img_file_path, 'rb')}
-    post_url = 'https://zhuanlan.zhihu.com/api/upload'
+    files = {'picture': open(img_file_path, 'rb')}
+    data = {'source': 'article'}
+    post_url = 'https://zhuanlan.zhihu.com/api/uploaded_images'
     headers_zhuanlan = {
         "Host": "zhuanlan.zhihu.com",
-        "Referer": "https://zhuanlan.zhihu.com/",
+        "Origin": "https://zhuanlan.zhihu.com/",
+        "Referer": "https://zhuanlan.zhihu.com/write",
         'User-Agent': agent,
         'X-XSRF-TOKEN': '',
         'Cookie':cf.get('zhihu', 'cookie')
+    
     }
 
     get_url = 'https://zhuanlan.zhihu.com/api/me'
@@ -150,14 +153,17 @@ def upload_img(img_file_path):
 
     # 读取cookie中的XSRF-TOKEN存入headers_专栏里的X-XSRF-TOKEN
     headers_zhuanlan['X-XSRF-TOKEN'] = requests.utils.dict_from_cookiejar(session.cookies)['XSRF-TOKEN']
-
     # post图片文件
     login_page = session.post(post_url, files=files, headers=headers_zhuanlan);
+    print(login_page)
+    print(22)
     login_code = eval(login_page.text)
+    print(login_code)
+    print(11)
 
     # 打印生成的图片url
 
-    return login_code['msg'][0]
+    return login_code['src']
 
 def get_img_file_new_url(file_parent_path, folder):
 
