@@ -66,15 +66,17 @@ def initial():
 
 def checkLogin():
 
-    url = 'http://login.sina.com.cn/signup/signin.php'
+    # url = 'http://login.sina.com.cn/signup/signin.php'
+    url = 'https://weibo.com/jiluofu/home?wvr=5'
     headers_weibo = {
 
-        'Host': 'login.sina.com.cn',
+        'Host': 'www.weibo.com',
+        # 'Host': 'login.sina.com.cn',
         # 'Origin': 'https://www.weibo.com',
         # 'Referer': 'https://www.weibo.com',
         'User-Agent': agent,
         # 'Content-Type': 'text/html;charset=UTF-8',
-        'Cookie': cookie
+        'Cookie': cf.get('weibo', 'cookie')
 
     }
 
@@ -82,8 +84,9 @@ def checkLogin():
 
     # 通过get_url，使得session获得专栏的cookie，里面有X-XSRF-TOKEN
     login_page = session.get(url, headers=headers_weibo, allow_redirects=False);
+    print(login_page)
     
-    pattern = r'my.sina.com.cn'
+    pattern = r'摹喵居士'
     res = re.findall(pattern, login_page.text)
     if len(res) > 0:
         print('weibo cookie is ok.')
