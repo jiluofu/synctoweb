@@ -295,8 +295,8 @@ def get_img_file_new_url(file_parent_path, folder):
 
 def pub(file_parent_path, folder):
 
-    # login(username, password)
-    initial()
+    login(username, password)
+    # initial()
 
     img_file_new_url = get_img_file_new_url(file_parent_path, folder)
     init.get_folder_imgs(file_parent_path, folder, img_file_new_url, 'weibo')
