@@ -258,7 +258,7 @@ def upload_img(img_file):
         'Host': 'picupload.service.weibo.com',
         'Referer': 'https://weibo.com/ttarticle/p/editor',
         'User-Agent': agent,
-        'Cookie': cf.get('weibo', 'cookie')
+        # 'Cookie': cf.get('weibo', 'cookie')
     }
 
     post_url = 'http://picupload.service.weibo.com/interface/pic_upload.php?mime=image%2Fjpeg&marks=1&app=miniblog&url=0&markpos=1&logo=&nick='
@@ -270,7 +270,7 @@ def upload_img(img_file):
     }
 
     login_page = session.post(post_url, files=files, headers=headers_pic, allow_redirects=False);
-
+    print(login_page.text)
     pattern = r'"pid":"(.*?)"'
     pid = re.findall(pattern, login_page.text)[0]
     img_new_url = 'https://wx3.sinaimg.cn/large/' + pid + '.jpg'
@@ -325,7 +325,7 @@ def pub(file_parent_path, folder):
         'User-Agent': agent,
         'Origin': 'https://card.weibo.com',
         'Content-Type': 'application/x-www-form-urlencoded;',
-        'Cookie': cf.get('weibo', 'cookie')
+        # 'Cookie': cf.get('weibo', 'cookie')
     }
 
     data = {
