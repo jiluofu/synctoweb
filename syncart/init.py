@@ -84,6 +84,14 @@ def fetch_url(root_path, url, no_cover = False):
     dir_path = root_path + os.path.sep + dir_name
     print(dir_name)
 
+    # # 不下载图片
+    # index_html_path = dir_path + os.sep + 'index.html'
+    # index_file_new = open(index_html_path, 'r', encoding='utf-8')
+    # file_content = index_file_new.read()
+    # get_cover(file_content, dir_path)
+    # return dir_name
+    # # 不下载图片
+
 
     if os.path.exists(dir_path):
         shutil.rmtree(dir_path) 
