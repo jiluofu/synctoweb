@@ -47,7 +47,7 @@ headers = {
 session = requests.session()
 
 conf_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/syncart/sync.conf'
-chromedriver_path = '/Users/zhuxu/Documents/mmjstool/chromedriver'
+chromedriver_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/chromedriver'
 
 
 # global global_note_id

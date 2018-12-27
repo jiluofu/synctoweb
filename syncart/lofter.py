@@ -23,7 +23,7 @@ import configparser
 from selenium import webdriver
 
 conf_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/syncart/sync.conf'
-chromedriver_path = '/Users/zhuxu/Documents/mmjstool/chromedriver'
+chromedriver_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/chromedriver'
 
 cf = configparser.RawConfigParser()
 cf.read(os.path.dirname(__file__) + os.path.sep + 'sync.conf')

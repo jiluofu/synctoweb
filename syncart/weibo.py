@@ -34,7 +34,7 @@ import configparser
 from selenium import webdriver
 
 conf_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/syncart/sync.conf'
-chromedriver_path = '/Users/zhuxu/Documents/mmjstool/chromedriver'
+chromedriver_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/chromedriver'
 
 '''
 如果没有开启登录保护，不用输入验证码就可以登录
