@@ -229,8 +229,8 @@ def pub(file_parent_path, folder):
     # session.cookies.save()
 
     # 读取cookie中的XSRF-TOKEN存入headers_专栏里的X-XSRF-TOKEN
-    headers_zhuanlan['X-XSRF-TOKEN'] = requests.utils.dict_from_cookiejar(session.cookies)['XSRF-TOKEN']
-    print(headers_zhuanlan['X-XSRF-TOKEN'])
+    # headers_zhuanlan['X-XSRF-TOKEN'] = requests.utils.dict_from_cookiejar(session.cookies)['XSRF-TOKEN']
+    # print(headers_zhuanlan['X-XSRF-TOKEN'])
     print(init.cover)
     zhihu_cover_url = upload_img(init.cover['file_path'])
     data = {
