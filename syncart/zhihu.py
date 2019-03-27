@@ -203,7 +203,7 @@ def pub(file_parent_path, folder):
     file_html_content = index_html_file.read()
     index_html_file.close()
 
-    post_url = 'https://zhuanlan.zhihu.com/api/drafts'
+    post_url = 'https://zhuanlan.zhihu.com/api/articles/drafts'
     headers_zhuanlan = {
 
         'Host': 'zhuanlan.zhihu.com',
@@ -270,7 +270,7 @@ def pub(file_parent_path, folder):
     tagArr = init.getTags(cfTag.get('zhihu', 'tag'))
     for i in range(0, len(tagArr)):
         tag = tagDic[tagArr[i]]
-        post_url = 'https://zhuanlan.zhihu.com/api/posts/' + str(pub_id) + '/topics'
+        post_url = 'https://zhuanlan.zhihu.com/api/articles/' + str(pub_id) + '/topics'
         data = {
 
             'id': tag,
@@ -279,12 +279,13 @@ def pub(file_parent_path, folder):
         data_str = json.dumps(data)
 
         login_page = session.post(post_url, data=data_str, headers=headers_zhuanlan);
+        print(login_page.text)
         res = json.loads(login_page.text)
         print(res)
 
     
 
-    post_url = 'https://zhuanlan.zhihu.com/api/drafts/' + str(pub_id) + '/publish'
+    post_url = 'https://zhuanlan.zhihu.com/api/articles/' + str(pub_id) + '/publish'
     data = {
 
         'author': {
