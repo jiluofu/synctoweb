@@ -101,8 +101,8 @@ def getCookie():
     driver.get(url)
     time.sleep(5)
     # print(username)
-    driver.find_element_by_id('form_email').send_keys(username)
-    driver.find_element_by_id('form_password').send_keys(password)
+    # driver.find_element_by_id('form_email').send_keys(username)
+    # driver.find_element_by_id('form_password').send_keys(password)
 
     input('去手动登录吧\n>  ')
     # 网页源码
