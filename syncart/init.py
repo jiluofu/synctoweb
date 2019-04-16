@@ -160,6 +160,80 @@ def fetch_url(root_path, url, no_cover = False):
     
 
     return dir_name
+
+def fetch_mk(root_path, title, no_cover = False):
+
+    dir_name = title.replace('.', '_' + date.replace('.', '') + '_')
+    dir_path = root_path + os.path.sep + dir_name
+    print(dir_name)
+
+
+    index_md_path = dir_path + os.sep + 'index.md'
+    index_file_new = open(index_md_path, 'r', encoding='utf-8')
+    file_content = index_file_new.read()
+    index_file_new.close()
+
+    img_dir_path = dir_path + os.sep + 'img'
+    os.mkdir(img_dir_path)
+
+
+    
+    pattern = r'<img data-original-src="([^"]*?)"[^<>]*?/>'
+    content_html = re.sub(pattern, '<img src="\\1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>', content_html)
+    # content_html = content_html.replace('<img src="https://github.com/jiluofu/jiluofu.github.com/raw/master/momiaojushi/static/qrcode.jpg" data-original-src="https://github.com/jiluofu/jiluofu.github.com/raw/master/momiaojushi/static/qrcode.jpg"/>', '')
+    content_html = re.sub(r'<([^<>]*?)qrcode([^<>]*?)/>', '', content_html)
+    
+
+    content_html = re.sub(r'<div[^<>]*?>', '', content_html)
+    content_html = content_html.replace('</div>', '')
+
+    # print(content_html)
+    imgs = get_imgs(content_html)
+    
+    for i in range(0, len(imgs)):
+        pattern = r'/([^\?\/]*)\?[^\?\/]*/'
+
+        img_file_name = re.findall(pattern, imgs[i])[0]
+
+        print(imgs[i])
+        print(img_file_name)
+        # img_file_name = re.sub(r'http://(.*?)/([^/]+$)', '\\2', imgs[i])
+        img_src_tmp = imgs[i];
+        if img_src_tmp.find('http:') < 0:
+            img_src_tmp = 'http:' + img_src_tmp;
+
+        r = session.get(img_src_tmp, headers=headers_img)
+        with open(img_dir_path + os.sep + img_file_name, 'wb') as f:
+            f.write(r.content)
+            f.close()
+            print(img_file_name)
+
+    index_html_path = dir_path + os.sep + 'index.html'
+    file_content = content_html
+    index_file_new = open(index_html_path, 'w', encoding='utf-8')
+    index_file_new.write(file_content)
+    index_file_new.close()
+
+    index_md_path = dir_path + os.sep + 'index.md'
+    file_content = html_to_mk(content_html)
+
+
+    # 查找封面图
+    if no_cover == False:
+        get_cover(file_content, dir_path)
+    index_file_new = open(index_md_path, 'w', encoding='utf-8')
+    index_file_new.write(file_content)
+    index_file_new.close()
+
+    index_git_md_path = dir_path + os.sep + 'index_git.md'
+    index_file_new = open(index_git_md_path, 'w', encoding='utf-8')
+    index_file_new.write(file_content.replace('//upload-images.jianshu.io/upload_images/', 'img/'))
+    index_file_new.close()
+
+    
+
+    return dir_name
+
 def get_cover(index_md_content, img_dir_path):
     pattern = r']\(([^\(\)]*)\)[\s]*封面'
     imgs = re.findall(pattern, index_md_content)
