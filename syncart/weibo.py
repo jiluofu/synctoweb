@@ -358,9 +358,9 @@ def pub(file_parent_path, folder):
 
     }
     post_url = 'https://card.weibo.com/article/v3/aj/editor/settings/setpayinfo'
-    login_page = session.post(post_url, data=data, headers=headers_art)
-    res = json.loads(login_page.text)
-    print(res)
+    # login_page = session.post(post_url, data=data, headers=headers_art)
+    # res = json.loads(login_page.text)
+    # print(res)
 
     data = {
 
@@ -368,11 +368,12 @@ def pub(file_parent_path, folder):
         'title': title,
         'status': 0,
         'isvclub': 0,
-        'ispay': 0,
+        # 'ispay': 0,
         'error_code': 0,
         'cover': weibo_cover_url,
         'content': file_html_content,
-        'is_word': 0
+        'is_word': 0,
+        'pay_setting':{"ispay":1, "isvclub":0}
         
     }
 
