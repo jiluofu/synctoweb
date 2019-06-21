@@ -39,7 +39,7 @@ cookie = cf.get('zhihu', 'cookie')
 cfTag = configparser.RawConfigParser()
 cfTag.read(os.path.dirname(__file__) + os.path.sep + 'tag.conf')
 
-agent = 'Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0'
+agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Safari/537.36'
 headers = {
     'Host': 'www.zhihu.com',
     'Referer': 'https://www.zhihu.com/',
@@ -85,8 +85,9 @@ def checkLogin():
     login_page = session.get(url, headers=headers_zhuanlan, allow_redirects=False);
     
 
-    pattern = r'摹喵居士'
+    pattern = r'26886444941312'
     res = re.findall(pattern, login_page.text)
+    print(login_page.text)
     if len(res) > 0:
         return True;
     else:
