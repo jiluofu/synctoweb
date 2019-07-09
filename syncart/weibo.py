@@ -255,13 +255,13 @@ def upload_img(img_file):
 
     headers_pic = {
 
-        'Host': 'picupload.weibo.com',
-        'Referer': 'https://weibo.com/ttarticle/p/editor',
+        'Origin': 'https://card.weibo.com',
+        'Referer': 'https://card.weibo.com/article/v3/editor',
         'User-Agent': agent,
         # 'Cookie': cf.get('weibo', 'cookie')
     }
 
-    post_url = 'http://picupload.weibo.com/interface/pic_upload.php?mime=image%2Fjpeg&marks=1&app=miniblog&url=0&markpos=1&logo=&nick='
+    post_url = 'https://picupload.weibo.com/interface/pic_upload.php?mime=image%2Fjpeg&marks=1&app=miniblog&url=0&markpos=1&logo=&nick='
 
 
     files = {
