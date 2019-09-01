@@ -71,7 +71,8 @@ file_parent_path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pa
 file_parent_path = file_parent_path + os.path.sep + 'momiaojushi'
 
 
-folder = init.fetch_url(file_parent_path, url)
+# folder = init.fetch_url(file_parent_path, url)
+folder = init.fetch_mk(file_parent_path, url)
 print(folder)
 qsj_folder_arr = []
 for i in range(0, len(qsj)):
@@ -83,11 +84,11 @@ for i in range(0, len(qsj)):
     qsj_folder_arr.append(qsj_folder)
 
 
-mpwx.pub(file_parent_path, folder, qsj_folder_arr, url)
-lofter.pub(file_parent_path, folder)
+# mpwx.pub(file_parent_path, folder, qsj_folder_arr, url)
+# lofter.pub(file_parent_path, folder)
 douban.pub(file_parent_path, folder)
-zhihu.pub(file_parent_path, folder)
-weibo.pub(file_parent_path, folder)
+# zhihu.pub(file_parent_path, folder)
+# weibo.pub(file_parent_path, folder)
 
 
 

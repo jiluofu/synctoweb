@@ -12,6 +12,10 @@ Update
 
 '''
 import requests
+import shutil
+import markdown
+import codecs
+import os
 try:
     import cookielib
 except:
@@ -38,7 +42,7 @@ headers = {
     'Host': 'www.jianshu.com',
     'Referer': 'http://www.jianshu.com/',
     'User-Agent': agent,
-    'Cookie': 'co=doutui90100476227f59b52dc96fbb; __yadk_uid=RQx4A3aMJbJmlpb72vZCDk9JBtVuz2Eh; Hm_lvt_0c0e9d9b1e7d617b3e6842e85b9fb068=1560981899,1561068014; locale=zh-CN; read_mode=day; default_font=font1; remember_user_token=W1s1MTAwMV0sIiQyYSQxMCRXeDNPa2hvOWIxUXlVWjV6Znlnc0xPIiwiMTU2MTQxMzkwOS4zNjM5ODI0Il0%3D--90160795986a0d33b4ea57e19852d5d0fd30ea16; _m7e_session_core=0b1b4aea03554d40a6987864c28bab1f; Hm_lpvt_0c0e9d9b1e7d617b3e6842e85b9fb068=1561414279; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%2216b71c585e0952-07abcc6a8d8661-37647e03-1296000-16b71c585e1720%22%2C%22%24device_id%22%3A%2216b71c585e0952-07abcc6a8d8661-37647e03-1296000-16b71c585e1720%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_referrer%22%3A%22%22%2C%22%24latest_referrer_host%22%3A%22%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%7D%2C%22first_id%22%3A%22%22%7D'
+    'Cookie': '__yadk_uid=3IwA3DYEI77kPvOoQoOjm0J4yfqh1OZy; Hm_lvt_0c0e9d9b1e7d617b3e6842e85b9fb068=1563491638,1563577270,1563751778,1563920408; locale=zh-CN; read_mode=day; default_font=font1; remember_user_token=W1s1MTAwMV0sIiQyYSQxMCRXeDNPa2hvOWIxUXlVWjV6Znlnc0xPIiwiMTU2NDAwNjYzNS4xMzk4MzM1Il0%3D--538e215f5851a4adbd3ae6072e4e4e96a4c7e648; _m7e_session_core=cd060d5206077e85eca41f1c8a5ca0e2; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%2251001%22%2C%22%24device_id%22%3A%2216c075d198f227-06b50d7bfdb19f-37677e02-2073600-16c075d1990eb6%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_referrer%22%3A%22%22%2C%22%24latest_referrer_host%22%3A%22%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%7D%2C%22first_id%22%3A%2216c075d198f227-06b50d7bfdb19f-37677e02-2073600-16c075d1990eb6%22%7D; Hm_lpvt_0c0e9d9b1e7d617b3e6842e85b9fb068=1564006687'
 
 }
 
@@ -106,16 +110,16 @@ def fetch_url(root_path, url, no_cover = False):
 
     
     pattern = r'<img data-original-src="([^"]*?)"[^<>]*?/>'
-    content_html = re.sub(pattern, '<img src="\\1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>', content_html)
+    # content_html = re.sub(pattern, '<img src="\\1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>', content_html)
     # content_html = content_html.replace('<img src="https://github.com/jiluofu/jiluofu.github.com/raw/master/momiaojushi/static/qrcode.jpg" data-original-src="https://github.com/jiluofu/jiluofu.github.com/raw/master/momiaojushi/static/qrcode.jpg"/>', '')
-    content_html = re.sub(r'<([^<>]*?)qrcode([^<>]*?)/>', '', content_html)
+    # content_html = re.sub(r'<([^<>]*?)qrcode([^<>]*?)/>', '', content_html)
     
 
-    content_html = re.sub(r'<div[^<>]*?>', '', content_html)
-    content_html = content_html.replace('</div>', '')
+    # content_html = re.sub(r'<div[^<>]*?>', '', content_html)
+    # content_html = content_html.replace('</div>', '')
 
     # print(content_html)
-    imgs = get_imgs(content_html)
+    imgs = get_imgs(file_content)
     
     for i in range(0, len(imgs)):
         pattern = r'/([^\?\/]*)\?[^\?\/]*/'
@@ -163,9 +167,10 @@ def fetch_url(root_path, url, no_cover = False):
 
 def fetch_mk(root_path, title, no_cover = False):
 
-    dir_name = title.replace('.', '_' + date.replace('.', '') + '_')
-    dir_path = root_path + os.path.sep + dir_name
-    print(dir_name)
+    # dir_name = title.replace('.', '_' + date.replace('.', '') + '_')
+    dir_path = root_path + os.path.sep + title
+
+    # print(dir_name)
 
 
     index_md_path = dir_path + os.sep + 'index.md'
@@ -173,54 +178,86 @@ def fetch_mk(root_path, title, no_cover = False):
     file_content = index_file_new.read()
     index_file_new.close()
 
-    img_dir_path = dir_path + os.sep + 'img'
-    os.mkdir(img_dir_path)
-
-
+    file_content = re.sub(r'!\[[^封面\[\]]*\]', '![]', file_content)
+    file_content = file_content.replace('(media/', '(/Users/zhuxu/Documents/docs/media/')
     
-    pattern = r'<img data-original-src="([^"]*?)"[^<>]*?/>'
-    content_html = re.sub(pattern, '<img src="\\1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>', content_html)
-    # content_html = content_html.replace('<img src="https://github.com/jiluofu/jiluofu.github.com/raw/master/momiaojushi/static/qrcode.jpg" data-original-src="https://github.com/jiluofu/jiluofu.github.com/raw/master/momiaojushi/static/qrcode.jpg"/>', '')
-    content_html = re.sub(r'<([^<>]*?)qrcode([^<>]*?)/>', '', content_html)
-    
-
-    content_html = re.sub(r'<div[^<>]*?>', '', content_html)
-    content_html = content_html.replace('</div>', '')
-
-    # print(content_html)
-    imgs = get_imgs(content_html)
-    
-    for i in range(0, len(imgs)):
-        pattern = r'/([^\?\/]*)\?[^\?\/]*/'
-
-        img_file_name = re.findall(pattern, imgs[i])[0]
-
-        print(imgs[i])
-        print(img_file_name)
-        # img_file_name = re.sub(r'http://(.*?)/([^/]+$)', '\\2', imgs[i])
-        img_src_tmp = imgs[i];
-        if img_src_tmp.find('http:') < 0:
-            img_src_tmp = 'http:' + img_src_tmp;
-
-        r = session.get(img_src_tmp, headers=headers_img)
-        with open(img_dir_path + os.sep + img_file_name, 'wb') as f:
-            f.write(r.content)
-            f.close()
-            print(img_file_name)
-
-    index_html_path = dir_path + os.sep + 'index.html'
-    file_content = content_html
-    index_file_new = open(index_html_path, 'w', encoding='utf-8')
+    index_file_new = open(index_md_path, 'w', encoding='utf-8')
     index_file_new.write(file_content)
     index_file_new.close()
+
+    
+
+    # index_html_path = dir_path + os.sep + 'index.html'
+    # index_html_file = open(index_html_path, "r", encoding='utf-8')
+    # index_html_content = markdown.Markdown(file_content)
+    # print(11111111111)
+    # print(index_html_content)
+
+    
+
+    img_dir_path = dir_path + os.sep + 'img'
+    shutil.rmtree(img_dir_path)
+    os.mkdir(img_dir_path)
+    # print(file_content)
+
+
+    
+    pattern = r'\((!\[\])|!\[封面\])\(([^)]*)\)'
+    # content_html = re.sub(pattern, '<img src="\\1?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"/>', file_content)
+    # content_html = content_html.replace('<img src="https://github.com/jiluofu/jiluofu.github.com/raw/master/momiaojushi/static/qrcode.jpg" data-original-src="https://github.com/jiluofu/jiluofu.github.com/raw/master/momiaojushi/static/qrcode.jpg"/>', '')
+    # content_html = re.sub(r'<([^<>]*?)qrcode([^<>]*?)/>', '', content_html)
+    
+
+    # content_html = re.sub(r'<div[^<>]*?>', '', content_html)
+    # content_html = content_html.replace('</div>', '')
+
+
+    # print(content_html)
+    imgs = get_imgs(file_content)
+    
+    for i in range(0, len(imgs)):
+        # pattern = r'/([^\?\/]*)\?[^\?\/]*/'
+
+        # img_file_name = re.findall(pattern, imgs[i])[0]
+        img_file_name = imgs[i]
+
+        # print(imgs[i])
+        # print(img_file_name)
+        # print(img_dir_path)
+        cmd = 'cp ' + img_file_name.replace(' ', '\ ') + ' ' + img_dir_path
+        print(cmd)
+        os.system(cmd)
+        # # img_file_name = re.sub(r'http://(.*?)/([^/]+$)', '\\2', imgs[i])
+        # img_src_tmp = imgs[i];
+        # if img_src_tmp.find('http:') < 0:
+        #     img_src_tmp = 'http:' + img_src_tmp;
+
+        # r = session.get(img_src_tmp, headers=headers_img)
+        # with open(img_dir_path + os.sep + img_file_name, 'wb') as f:
+        #     f.write(r.content)
+        #     f.close()
+        #     print(img_file_name)
+    # 查找封面图
+    if no_cover == False:
+        get_cover(file_content, dir_path)
+
+    index_html_path = dir_path + os.sep + 'index.html'
+    md_file = codecs.open(index_md_path, "r", "utf-8")
+    md_text = md_file.read()
+    index_html_content = markdown.markdown(md_text)  
+    index_file_new = open(index_html_path, 'w', encoding='utf-8')
+    index_file_new.write(index_html_content)
+    index_file_new.close()
+
+    return title
+
+    
 
     index_md_path = dir_path + os.sep + 'index.md'
     file_content = html_to_mk(content_html)
 
 
-    # 查找封面图
-    if no_cover == False:
-        get_cover(file_content, dir_path)
+    
     index_file_new = open(index_md_path, 'w', encoding='utf-8')
     index_file_new.write(file_content)
     index_file_new.close()
@@ -235,11 +272,16 @@ def fetch_mk(root_path, title, no_cover = False):
     return dir_name
 
 def get_cover(index_md_content, img_dir_path):
-    pattern = r']\(([^\(\)]*)\)[\s]*封面'
+    pattern = r'\!\[封面\]\(([^)]*)\)'
     imgs = re.findall(pattern, index_md_content)
 
+
     if len(imgs) > 0:
-        img = imgs[0] + '?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
+        # img = imgs[0] + '?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
+        imgs[0] = imgs[0].replace('?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240', '')
+        img = imgs[0]
+        print(2222222)
+        print(img)
         pattern = r'\.([^\.]*)$'
         ext = re.findall(pattern, imgs[0])
         ext = ext[0]
@@ -252,15 +294,19 @@ def get_cover(index_md_content, img_dir_path):
         cover['ext'] = ext 
         cover['origin_file_path'] = img_dir_path + os.sep + 'img' + os.sep + origin_file_name
         cover['file_path'] = img_dir_path + os.sep + cover['file_name']
+        print(cover)
+        cmd = 'cp ' + cover['origin_file_path'].replace(' ', '\ ') + ' ' + img_dir_path + os.sep + cover['file_name']
+        print(cmd)
+        os.system(cmd)
 
-        img_src_tmp = img;
-        if img_src_tmp.find('http:') < 0:
-            img_src_tmp = 'http:' + img_src_tmp;
+        # img_src_tmp = img;
+        # if img_src_tmp.find('http:') < 0:
+        #     img_src_tmp = 'http:' + img_src_tmp;
 
-        r = session.get(img_src_tmp, headers=headers_img)
-        with open(cover['file_path'], 'wb') as f:
-            f.write(r.content)
-            f.close()
+        # r = session.get(img_src_tmp, headers=headers_img)
+        # with open(cover['file_path'], 'wb') as f:
+        #     f.write(r.content)
+        #     f.close()
     else:
         img_file = listdir(img_dir_path + os.sep + 'img')
         img_file = img_file[0]
@@ -283,8 +329,10 @@ def get_qsj_folder(file_parent_path, qsj_url):
    
 def get_imgs(html):
     
-    pattern = r'<img src="([^"]*?)"[^<>]*?/>'
+    # pattern = r'<img src="([^"]*?)"[^<>]*?/>'
+    pattern = r'\!\[[封面]*\]\(([^"]*?)\)'
     imgs = re.findall(pattern, html)
+    print(imgs)
     # if len(imgs) == 0:
     #     pattern = r'<img data-original-src="([^"]*?)"[^<>]*?/>'
     #     imgs = re.findall(pattern, html)

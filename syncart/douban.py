@@ -220,7 +220,6 @@ def get_img_file_new_url(file_parent_path, folder):
         img_file_path = file_pre + 'img' + os.path.sep + img_files[i]
         
         img_file_new_url[img_files[i]] = upload_img(img_file_path)
-        
         print(img_file_new_url[img_files[i]])
 
     # print(img_file_new_url)
@@ -234,6 +233,7 @@ def trim(str):
 def mkToDouban(mk_content):
 
     res = trim(mk_content)
+
     pattern = r'([\n])+'
     res = re.sub(pattern, '\n', res)
     res = res.split('\n')
@@ -249,12 +249,14 @@ def mkToDouban(mk_content):
         lineObj['key'] = 'kk_' + str(i)
         if lineObj['type'] == 'atomic':
             lineObj['entityRanges'][0]['key'] = image_count
+            print(555555)
             imageObj = getDobanImageObj(res[i])
+            print(imageObj)
             data['entityMap'][str(image_count)] = imageObj
             image_count = image_count + 1;
 
         data['blocks'].append(lineObj)
-
+    print(data)
     return json.dumps(data)
     
 def mkLineToDouban(mk_line):
@@ -333,20 +335,21 @@ def getDobanObj():
 
 def getDobanImageObj(mk_line):
 
-    pattern = r'^!\[\]\(\/\/upload-images\.jianshu\.io\/upload_images\/(.*?)\)$'
+    pattern = r'^!\[\]\((\/[^\/]*)*\/(.*?)\)$'
     content = re.findall(pattern, mk_line)
+    # print(mk_line)
     
     if len(content) > 0:
-        
+
         return {
             'type': 'IMAGE',
             'mutability': 'IMMUTABLE',
             'data': {
-                'src': global_img_file_new_url[content[0]]['image_url'],
+                'src': global_img_file_new_url[content[0][1]]['image_url'],
                 'width': 600,
                 'is_animated': 'false',
                 'caption': '',
-                'id': global_img_file_new_url[content[0]]['id'],
+                'id': global_img_file_new_url[content[0][1]]['id'],
                 "height": 400
             }
         }
@@ -380,6 +383,8 @@ def pub(file_parent_path, folder):
 
     global global_img_file_new_url
     global_img_file_new_url = get_img_file_new_url(file_parent_path, folder)
+    print(222)
+    print(global_img_file_new_url)
     
     title = re.sub(r'_[^_]*_', '.', folder)
 
@@ -389,8 +394,11 @@ def pub(file_parent_path, folder):
     # 读取index.md
     index_mk_file = open(file_mk_path, 'r', encoding='utf-8')
     file_mk_content = index_mk_file.read()
+    file_mk_content = file_mk_content.replace('?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240', '')
+    file_mk_content = file_mk_content.replace('![封面]', '![]')
     index_mk_file.close()
     
+    print(file_mk_content)
     note_text = mkToDouban(file_mk_content)
     # print(note_text)
 

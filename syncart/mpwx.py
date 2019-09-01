@@ -378,7 +378,7 @@ def pub(file_parent_path, folder, qsj_folder_arr, url):
         'vid_type0': '',
         'need_open_comment0': '1',
         'only_fans_can_comment0': '0',
-        'sourceurl0': url,
+        'sourceurl0': '',
         'fee0': '0',
         'reprint_permit_type0': '1',
         'copyright_type0': '1',
