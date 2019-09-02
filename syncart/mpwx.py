@@ -282,7 +282,7 @@ def get_qsj_cover(file_parent_path, qsj_folder):
     qsj_cover = {}
     qsj_cover['folder'] = qsj_folder
 
-    index_md_path = file_parent_path + os.sep + 'tmp' + os.sep + qsj_folder + os.sep + 'index.md'
+    index_md_path = file_parent_path + os.sep + qsj_folder + os.sep + 'index.md'
     index_md_file = open(index_md_path, 'r', encoding='utf-8')
     file_md_content = index_md_file.read()
     index_md_file.close()
@@ -304,7 +304,7 @@ def get_qsj_cover(file_parent_path, qsj_folder):
 def get_qsj_cover_local_by_url(file_parent_path, qsj_folder, cover_url):
 
 
-    cover_img_path = file_parent_path + os.sep + 'tmp' + os.sep + qsj_folder + os.sep + 'img'
+    cover_img_path = file_parent_path + os.sep + qsj_folder + os.sep + 'img'
 
     pattern = r'\/([^\/]*)$'
     cover_file_name = re.findall(pattern, cover_url)
@@ -324,8 +324,8 @@ def pub(file_parent_path, folder, qsj_folder_arr, url):
     print(qsj_folder_arr)
 
     for i in range(0, len(qsj_folder_arr)):
-        img_file_new_url = get_img_file_new_url(file_parent_path + os.path.sep + 'tmp', qsj_folder_arr[i]['folder'])
-        init.get_folder_imgs(file_parent_path + os.path.sep + 'tmp', qsj_folder_arr[i]['folder'], img_file_new_url, 'mpwx')
+        img_file_new_url = get_img_file_new_url(file_parent_path, qsj_folder_arr[i]['folder'])
+        init.get_folder_imgs(file_parent_path, qsj_folder_arr[i]['folder'], img_file_new_url, 'mpwx')
         qsj_cover = get_qsj_cover(file_parent_path, qsj_folder_arr[i]['folder'])
         qsj_cover_arr.append(qsj_cover)
 
@@ -390,7 +390,7 @@ def pub(file_parent_path, folder, qsj_folder_arr, url):
 
     for i in range(0, len(qsj_folder_arr)):
 
-        qsj_file_pre = file_parent_path + os.path.sep + 'tmp' + os.path.sep + qsj_folder_arr[i]['folder'] + os.path.sep
+        qsj_file_pre = file_parent_path + os.path.sep + qsj_folder_arr[i]['folder'] + os.path.sep
         qsj_file_html_path = qsj_file_pre + 'index_mpwx.html'
         qsj_index_html_file = open(qsj_file_html_path, 'r', encoding='utf-8')
         qsj_file_html_content = qsj_index_html_file.read()

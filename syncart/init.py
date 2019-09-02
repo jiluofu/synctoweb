@@ -320,7 +320,7 @@ def get_qsj_folder(file_parent_path, qsj_url):
     qsj_folder = {}
 
     print(qsj_url)
-    qsj_folder['folder'] = fetch_url(file_parent_path + os.path.sep + 'tmp', qsj_url, True)
+    qsj_folder['folder'] = fetch_mk(file_parent_path, qsj_url, True)
 
     return qsj_folder
 

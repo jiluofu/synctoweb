@@ -335,9 +335,9 @@ def getDobanObj():
 
 def getDobanImageObj(mk_line):
 
-    pattern = r'^!\[\]\((\/[^\/]*)*\/(.*?)\)$'
+    pattern = r'([^\/]*\.(jpg|jpeg|png))'
     content = re.findall(pattern, mk_line)
-    # print(mk_line)
+    print(content)
     
     if len(content) > 0:
 
@@ -345,11 +345,11 @@ def getDobanImageObj(mk_line):
             'type': 'IMAGE',
             'mutability': 'IMMUTABLE',
             'data': {
-                'src': global_img_file_new_url[content[0][1]]['image_url'],
+                'src': global_img_file_new_url[content[0][0]]['image_url'],
                 'width': 600,
                 'is_animated': 'false',
                 'caption': '',
-                'id': global_img_file_new_url[content[0][1]]['id'],
+                'id': global_img_file_new_url[content[0][0]]['id'],
                 "height": 400
             }
         }
