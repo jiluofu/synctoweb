@@ -180,18 +180,11 @@ def fetch_mk(root_path, title, no_cover = False):
 
     file_content = re.sub(r'!\[[^封面\[\]]*\]', '![]', file_content)
     file_content = file_content.replace('(media/', '(/Users/zhuxu/Documents/docs/media/')
+    file_content = file_content.replace('?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240', '')
     
     index_file_new = open(index_md_path, 'w', encoding='utf-8')
     index_file_new.write(file_content)
     index_file_new.close()
-
-    
-
-    # index_html_path = dir_path + os.sep + 'index.html'
-    # index_html_file = open(index_html_path, "r", encoding='utf-8')
-    # index_html_content = markdown.Markdown(file_content)
-    # print(11111111111)
-    # print(index_html_content)
 
     
 
@@ -224,19 +217,25 @@ def fetch_mk(root_path, title, no_cover = False):
         # print(imgs[i])
         # print(img_file_name)
         # print(img_dir_path)
-        cmd = 'cp ' + img_file_name.replace(' ', '\ ') + ' ' + img_dir_path
-        print(cmd)
-        os.system(cmd)
-        # # img_file_name = re.sub(r'http://(.*?)/([^/]+$)', '\\2', imgs[i])
-        # img_src_tmp = imgs[i];
-        # if img_src_tmp.find('http:') < 0:
-        #     img_src_tmp = 'http:' + img_src_tmp;
-
-        # r = session.get(img_src_tmp, headers=headers_img)
-        # with open(img_dir_path + os.sep + img_file_name, 'wb') as f:
-        #     f.write(r.content)
-        #     f.close()
-        #     print(img_file_name)
+        if img_file_name.find('http') == -1:
+            cmd = 'cp ' + img_file_name.replace(' ', '\ ') + ' ' + img_dir_path
+            print(cmd)
+            os.system(cmd)
+        else:
+            # img_file_name = re.sub(r'http://(.*?)/([^/]+$)', '\\2', imgs[i])
+            img_src_tmp = imgs[i];
+            # if img_src_tmp.find('http:') < 0:
+            #     img_src_tmp = 'http:' + img_src_tmp;
+            # print(imgs[i])
+            pattern = r'^(http|https)\:\/\/([^\/]*\/)*([^\/]*)$'
+            print(re.findall(pattern, imgs[i]))
+            img_file_name = re.findall(pattern, imgs[i])[0][2]
+            print(img_file_name)
+            r = session.get(img_src_tmp, headers=headers_img)
+            with open(img_dir_path + os.sep + img_file_name, 'wb') as f:
+                f.write(r.content)
+                f.close()
+                print(img_file_name)
     # 查找封面图
     if no_cover == False:
         get_cover(file_content, dir_path)
