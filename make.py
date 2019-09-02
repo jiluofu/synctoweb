@@ -16,6 +16,7 @@ import shutil
 import markdown
 import codecs
 import os
+import time
 try:
     import cookielib
 except:
@@ -126,12 +127,32 @@ def listdir(dir):
 
 def makeDir(file_name):
 
-    img_dir_path = root_path + os.sep + file_name.replace('.md', '')
+    index_md_path = root_path + os.path.sep + file_name
+    index_file_new = open(index_md_path, 'r', encoding='utf-8')
+    file_content = index_file_new.read()
+    index_file_new.close()
+    date = ''
+    pattern = r'\*\*(\d\d\d\d\.\d\d\.\d\d)\*\*'
+    res = re.findall(pattern, file_content)
+    if len(res) > 0:
+        date = res[0].replace('.', '')
+    res = file_name.replace('.md', '').split('.')
+    if len(res) == 2:
+        dir_name = res[0] + '_' + date + '_' + res[1]
+    print(dir_name)
+    print(file_name)
+
+    img_dir_path = root_path + os.sep + dir_name
     if os.path.isdir(img_dir_path):
         shutil.rmtree(img_dir_path)
     os.mkdir(img_dir_path)
     os.mkdir(img_dir_path + os.sep + 'img')
-    cmd = 'mv ' + root_path + os.sep + file_name + ' ' + img_dir_path + os.sep + 'index.md'
+    cmd = 'cp ' + root_path + os.sep + file_name + ' ' + img_dir_path + os.sep
+    
+    cmd = 'cp ' + root_path + os.sep + file_name + ' ' + img_dir_path + os.sep + 'index.md'
+    print(cmd)
+    
+    
     os.system(cmd)
 
 def run():
