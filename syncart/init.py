@@ -179,7 +179,7 @@ def fetch_mk(root_path, title, no_cover = False):
     index_file_new.close()
 
     file_content = re.sub(r'!\[[^封面\[\]]*\]', '![]', file_content)
-    file_content = file_content.replace('(media/', '(/Users/zhuxu/Documents/docs/media/')
+    file_content = file_content.replace('(media/', '(' + dir_path + '/media/')
     file_content = file_content.replace('?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240', '')
     
     index_file_new = open(index_md_path, 'w', encoding='utf-8')
@@ -206,7 +206,9 @@ def fetch_mk(root_path, title, no_cover = False):
 
 
     # print(content_html)
+    # print(file_content)
     imgs = get_imgs(file_content)
+
     
     for i in range(0, len(imgs)):
         # pattern = r'/([^\?\/]*)\?[^\?\/]*/'
@@ -218,9 +220,10 @@ def fetch_mk(root_path, title, no_cover = False):
         # print(img_file_name)
         # print(img_dir_path)
         if img_file_name.find('http') == -1:
-            cmd = 'cp ' + img_file_name.replace(' ', '\ ') + ' ' + img_dir_path
-            print(cmd)
-            os.system(cmd)
+            # cmd = 'cp ' + img_file_name.replace(' ', '\ ') + ' ' + img_dir_path
+            # print(cmd)
+            # os.system(cmd)
+            shutil.copyfile(img_file_name.replace('%20', ' '), img_dir_path + os.sep + img_file_name.replace('%20', ' ').split("/")[-1])
         else:
             # img_file_name = re.sub(r'http://(.*?)/([^/]+$)', '\\2', imgs[i])
             img_src_tmp = imgs[i];
@@ -279,8 +282,8 @@ def get_cover(index_md_content, img_dir_path):
         # img = imgs[0] + '?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
         imgs[0] = imgs[0].replace('?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240', '')
         img = imgs[0]
-        print(2222222)
-        print(img)
+        
+        
         pattern = r'\.([^\.]*)$'
         ext = re.findall(pattern, imgs[0])
         ext = ext[0]
@@ -415,45 +418,25 @@ def get_folder_imgs(file_parent_path, folder, img_file_new_url, site):
 
     # 构建原始图片文件名和旧图片url的kv对象
     # 查找图片的markdown标签
-    pattern = r'\!\[\]\((.*?)\)'
+    pattern = r'\!\[[^\[\]]*\]\((.*?)\)'
 
     # 得到所有就图片url的数组
     img_urls = re.findall(pattern, file_content)
-    # if len(img_urls) == 0:
-    #     pattern_img = r'<img data-original-src="([^"]*?)"[^<>]*?/>'
-    #     img_urls = re.findall(pattern_img, file_content)
-    #     #?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240
-    #     for i in range(0, len(img_urls)):
-    #         img_urls[i] = img_urls[i] + '?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240'
-
+    
 
     # 遍历找对应关系
     img_file_url = {};
     for i in range(0, len(img_files)):
         for j in range(0, len(img_urls)):
+            img_urls[j] = img_urls[j].replace('%20', ' ')
             if img_files[i] in img_urls[j]:
-                img_file_url[img_files[i]] = img_urls[j]
-
-
-    # 所有img的图片文件上传到服务器，获得原始图片文件名和图片url的kv对象
-    # img_file_new_url = {}
-    # img_file_new_url = get_img_file_new_url(file_parent_path, folder)
-    print(img_file_new_url)
-
-    # global mpwx_cover
-    # global zhihu_cover
-    # for i in range(0, len(img_files)):
-    #     if 'cover' in img_files[i]:
-    #         if site == 'mpwx':
-    #             mpwx_cover = img_file_new_url[img_files[i]]
-    #         elif site == 'zhihu':
-    #             zhihu_cover = img_file_new_url[img_files[i]]
-
-
+                img_file_url[img_files[i]] = img_urls[j].replace(' ', '%20')
+      
     # index.md里寻找原始文名对应的图片url，将其对应的图片url换成上传后的图片url
     for i in range(0, len(img_files)):
         # print(img_files[i])
-        if img_files[i] in img_file_url:
+        if img_files[i] in img_file_url:       
+            
             file_content = file_content.replace(img_file_url[img_files[i]], img_file_new_url[img_files[i]])
             file_content = file_content.replace('[封面]', '')
 

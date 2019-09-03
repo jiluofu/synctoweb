@@ -85,10 +85,10 @@ for i in range(0, len(qsj)):
 
 
 mpwx.pub(file_parent_path, folder, qsj_folder_arr, url)
-# lofter.pub(file_parent_path, folder)
-# douban.pub(file_parent_path, folder)
-# zhihu.pub(file_parent_path, folder)
-# weibo.pub(file_parent_path, folder)
+lofter.pub(file_parent_path, folder)
+douban.pub(file_parent_path, folder)
+zhihu.pub(file_parent_path, folder)
+weibo.pub(file_parent_path, folder)
 
 
 
