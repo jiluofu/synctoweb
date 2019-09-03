@@ -243,6 +243,9 @@ def fetch_mk(root_path, title, no_cover = False):
     if no_cover == False:
         get_cover(file_content, dir_path)
 
+    shell_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/shell_pic.sh'
+    os.system(shell_path + ' ' + dir_path)
+
     index_html_path = dir_path + os.sep + 'index.html'
     md_file = codecs.open(index_md_path, "r", "utf-8")
     md_text = md_file.read()
@@ -252,26 +255,6 @@ def fetch_mk(root_path, title, no_cover = False):
     index_file_new.close()
 
     return title
-
-    
-
-    index_md_path = dir_path + os.sep + 'index.md'
-    file_content = html_to_mk(content_html)
-
-
-    
-    index_file_new = open(index_md_path, 'w', encoding='utf-8')
-    index_file_new.write(file_content)
-    index_file_new.close()
-
-    index_git_md_path = dir_path + os.sep + 'index_git.md'
-    index_file_new = open(index_git_md_path, 'w', encoding='utf-8')
-    index_file_new.write(file_content.replace('//upload-images.jianshu.io/upload_images/', 'img/'))
-    index_file_new.close()
-
-    
-
-    return dir_name
 
 def get_cover(index_md_content, img_dir_path):
     pattern = r'\!\[封面\]\(([^)]*)\)'
