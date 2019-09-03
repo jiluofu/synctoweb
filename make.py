@@ -137,23 +137,21 @@ def makeDir(file_name):
     if len(res) > 0:
         date = res[0].replace('.', '')
     res = file_name.replace('.md', '').split('.')
+    dir_name = file_name
     if len(res) == 2:
         dir_name = res[0] + '_' + date + '_' + res[1]
     print(dir_name)
     print(file_name)
 
     img_dir_path = root_path + os.sep + dir_name
+    print(img_dir_path)
     if os.path.isdir(img_dir_path):
         shutil.rmtree(img_dir_path)
     os.mkdir(img_dir_path)
     os.mkdir(img_dir_path + os.sep + 'img')
-    cmd = 'cp ' + root_path + os.sep + file_name + ' ' + img_dir_path + os.sep
     
-    cmd = 'cp ' + root_path + os.sep + file_name + ' ' + img_dir_path + os.sep + 'index.md'
-    print(cmd)
-    
-    
-    os.system(cmd)
+    shutil.copyfile(root_path + os.sep + file_name, img_dir_path + os.sep + 'index.md')
+    shutil.move(root_path + os.sep + file_name, img_dir_path + os.sep)
 
 def run():
     
