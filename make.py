@@ -134,16 +134,19 @@ def makeDir(file_name):
     date = ''
     pattern = r'\*\*(\d\d\d\d\.\d\d\.\d\d)\*\*'
     res = re.findall(pattern, file_content)
+    
     if len(res) > 0:
         date = res[0].replace('.', '')
     res = file_name.replace('.md', '').split('.')
     dir_name = file_name
     if len(res) == 2:
         dir_name = res[0] + '_' + date + '_' + res[1]
+    
     print(dir_name)
     print(file_name)
 
     img_dir_path = root_path + os.sep + dir_name
+
     print(img_dir_path)
     if os.path.isdir(img_dir_path):
         shutil.rmtree(img_dir_path)
@@ -158,7 +161,8 @@ def run():
     print(root_path)
     img_files = listdir(root_path)
     for i in range(0, len(img_files)):
-        if (img_files[i].find('.md') != -1 and img_files[i] != 'sample.md'):
+        if (img_files[i].find('.md') != -1 and img_files[i] != 'sample.md' ):
+
             print(img_files[i])
             makeDir(img_files[i])
 

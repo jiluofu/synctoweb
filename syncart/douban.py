@@ -345,11 +345,11 @@ def getDobanImageObj(mk_line):
             'type': 'IMAGE',
             'mutability': 'IMMUTABLE',
             'data': {
-                'src': global_img_file_new_url[content[0][0]]['image_url'],
+                'src': global_img_file_new_url[content[0][0].replace('%20', ' ')]['image_url'],
                 'width': 600,
                 'is_animated': 'false',
                 'caption': '',
-                'id': global_img_file_new_url[content[0][0]]['id'],
+                'id': global_img_file_new_url[content[0][0].replace('%20', ' ')]['id'],
                 "height": 400
             }
         }
