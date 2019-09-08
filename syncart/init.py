@@ -233,8 +233,9 @@ def fetch_mk(root_path, title, no_cover = False):
             pattern = r'^(http|https)\:\/\/([^\/]*\/)*([^\/]*)$'
             print(re.findall(pattern, imgs[i]))
             img_file_name = re.findall(pattern, imgs[i])[0][2]
-            print(img_file_name)
-            r = session.get(img_src_tmp, headers=headers_img)
+            print(333)
+            print(img_src_tmp)
+            r = session.get(img_src_tmp)
             with open(img_dir_path + os.sep + img_file_name, 'wb') as f:
                 f.write(r.content)
                 f.close()

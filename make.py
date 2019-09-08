@@ -141,6 +141,8 @@ def makeDir(file_name):
     dir_name = file_name
     if len(res) == 2:
         dir_name = res[0] + '_' + date + '_' + res[1]
+    else:
+        dir_name = res[0].split('-')[1] + res[0].split('-')[2] + '-' + file_content.split('\n')[0]
     
     print(dir_name)
     print(file_name)

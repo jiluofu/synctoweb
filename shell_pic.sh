@@ -7,8 +7,10 @@ cd $1/img
 find . -type f -name "*.jpg" -o -name "*.JPG"|xargs -I {} convert -resize 1240x1240 {} output/{}
 cp output/* .
 rm -rf output
+find . -type f -name "*.jpg" -o -name "*.JPG"|xargs -I {} jpegoptim  -m90 {}
+
 # echo "compress photos"
 # cd output
-# find . -type f -name "*.jpg" -o -name "*.JPG"|xargs -I {} jpegoptim  -m80 {}
+# find . -type f -name "*.jpg" -o -name "*.JPG"|xargs -I {} jpegoptim  -m90 {}
 
 
