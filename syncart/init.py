@@ -281,7 +281,7 @@ def get_cover(index_md_content, img_dir_path):
         cover['origin_file_path'] = img_dir_path + os.sep + 'img' + os.sep + origin_file_name
         cover['file_path'] = img_dir_path + os.sep + cover['file_name']
         print(cover)
-        cmd = 'cp ' + cover['origin_file_path'].replace(' ', '\ ') + ' ' + img_dir_path + os.sep + cover['file_name']
+        cmd = 'cp ' + cover['origin_file_path'].replace('%20', '\ ') + ' ' + img_dir_path + os.sep + cover['file_name']
         print(cmd)
         os.system(cmd)
 

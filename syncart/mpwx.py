@@ -347,7 +347,7 @@ def pub(file_parent_path, folder, qsj_folder_arr, url):
 
     post_url = 'https://mp.weixin.qq.com/cgi-bin/operate_appmsg?t=ajax-response&sub=create&type=10&token=' + token + '&lang=zh_CN'
 
-    mpwx_cover_url = upload_img(init.cover['origin_file_path'])
+    mpwx_cover_url = upload_img(init.cover['origin_file_path'].replace('%20', ' '))
 
     print(init.cover['origin_file_path'])
     file_html_content = file_html_content + add_qr_html()
