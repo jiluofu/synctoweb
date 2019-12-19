@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3
+#!/usr/local/bin/python3.7
 # from syncart import  art
 from syncart import  init
 

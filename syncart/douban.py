@@ -82,7 +82,7 @@ def checkLogin():
 
 
     # 通过get_url，使得session获得专栏的cookie，里面有X-XSRF-TOKEN
-    login_page = session.get(url, headers=headers_douban, allow_redirects=False);
+    login_page = session.get(url, headers=headers_douban, allow_redirects=False, verify=False);
     
 
     pattern = r'摹喵居士'
@@ -141,7 +141,7 @@ def get_upload_img_data():
     }
 
     get_url = 'https://www.douban.com/note/create'
-    login_page = session.get(get_url, headers=headers_douban);
+    login_page = session.get(get_url, headers=headers_douban, verify=False);
     
     pattern = r'_NOTE_ID = \'(.*?)\';'
     res = re.findall(pattern, login_page.text)[0]
@@ -196,7 +196,7 @@ def upload_img(img_file_path):
     # headers_douban['X-XSRF-TOKEN'] = requests.utils.dict_from_cookiejar(session.cookies)['XSRF-TOKEN']
 
     # post图片文件
-    login_page = session.post(post_url, data=data, files=files, headers=headers_douban);
+    login_page = session.post(post_url, data=data, files=files, headers=headers_douban, verify=False);
     
     res = json.loads(login_page.text)
     print(res)
@@ -372,7 +372,7 @@ def pub(file_parent_path, folder):
     }
 
     url = 'https://www.douban.com/'
-    login_page = session.get(url, headers=headers_douban, allow_redirects=False);
+    login_page = session.get(url, headers=headers_douban, allow_redirects=False, verify=False);
     pattern = r'name="ck" value="([^"]*)"'
     res = re.findall(pattern, login_page.text)
     global ck
@@ -426,14 +426,14 @@ def pub(file_parent_path, folder):
         # 'captcha-solution':'stomach'
     }
 
-    login_page = session.post(post_url, data=data, headers=headers_douban)
+    login_page = session.post(post_url, data=data, headers=headers_douban, verify=False)
     print(login_page.text)
     res = json.loads(login_page.text)
     # print(res)
     if ('captcha_id' in res) and res['captcha_id'] != '':
         data['captcha-id'] = res['captcha_id']
         data['captcha-solution'] = get_captcha(res['captcha_img'])    
-        login_page = session.post(post_url, data=data, headers=headers_douban)
+        login_page = session.post(post_url, data=data, headers=headers_douban, verify=False)
         res = json.loads(login_page.text)
         print(res)
 
@@ -452,7 +452,7 @@ def get_captcha(captcha_img_url):
 
     }
 
-    r = session.get(captcha_img_url, headers=headers)
+    r = session.get(captcha_img_url, headers=headers, verify=False)
     with open('captcha.jpg', 'wb') as f:
         f.write(r.content)
         f.close()
