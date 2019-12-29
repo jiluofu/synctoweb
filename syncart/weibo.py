@@ -373,7 +373,10 @@ def pub(file_parent_path, folder):
         'cover': weibo_cover_url,
         'content': file_html_content,
         'is_word': 0,
-        'pay_setting':{"ispay":1, "isvclub":0}
+        'pay_setting':{"ispay":1, "isvclub":0},
+        'save': 1,
+        'isreward': 1,
+        'content_type': 0
         
     }
 
