@@ -197,7 +197,7 @@ def upload_img(img_file_path):
 
     # post图片文件
     login_page = session.post(post_url, data=data, files=files, headers=headers_douban, verify=False);
-    
+    print(login_page.text)
     res = json.loads(login_page.text)
     print(res)
     image_url = res['photo']['url']
