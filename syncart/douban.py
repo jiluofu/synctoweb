@@ -74,7 +74,7 @@ def checkLogin():
         'Origin': 'https://www.douban.com',
         'Referer': 'https://www.douban.com',
         'User-Agent': agent,
-        'Content-Type': 'application/json;charset=UTF-8',
+        'Content-Type': 'text/html;charset=UTF-8',
         'Cookie': cookie
 
     }
