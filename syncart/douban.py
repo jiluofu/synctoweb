@@ -429,10 +429,12 @@ def pub(file_parent_path, folder):
     login_page = session.post(post_url, data=data, headers=headers_douban, verify=False)
     print(login_page.text)
     res = json.loads(login_page.text)
-    # print(res)
+    print(res)
     if ('captcha_id' in res) and res['captcha_id'] != '':
         data['captcha-id'] = res['captcha_id']
         data['captcha-solution'] = get_captcha(res['captcha_img'])    
+        print(11)
+        print(data)
         login_page = session.post(post_url, data=data, headers=headers_douban, verify=False)
         res = json.loads(login_page.text)
         print(res)
