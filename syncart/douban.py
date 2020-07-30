@@ -29,6 +29,7 @@ import json
 import string
 import configparser
 from selenium import webdriver
+from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 cf = configparser.RawConfigParser()
 cf.read(os.path.dirname(__file__) + os.path.sep + 'sync.conf')
@@ -405,7 +406,6 @@ def pub(file_parent_path, folder):
 
     # return
     post_url = 'https://www.douban.com/j/note/publish'
-    
 
     data = {
 
@@ -426,18 +426,47 @@ def pub(file_parent_path, folder):
         # 'captcha-solution':'stomach'
     }
 
-    login_page = session.post(post_url, data=data, headers=headers_douban, verify=False)
+    headers_douban_create = {
+
+        'Host': 'www.douban.com',
+        'Origin': 'https://www.douban.com',
+        'Referer': 'https://www.douban.com/people/Jiluofu/notes',
+        'User-Agent': agent,
+        # 'Content-Type': 'application/json;charset=UTF-8',
+        'Cookie': cf.get('douban', 'cookie')
+
+    }
+    url = 'https://www.douban.com/note/create'
+    login_page = session.get(url, headers=headers_douban_create);
     print(login_page.text)
-    res = json.loads(login_page.text)
-    print(res)
-    if ('captcha_id' in res) and res['captcha_id'] != '':
-        data['captcha-id'] = res['captcha_id']
-        data['captcha-solution'] = get_captcha(res['captcha_img'])    
-        print(11)
-        print(data)
-        login_page = session.post(post_url, data=data, headers=headers_douban, verify=False)
-        res = json.loads(login_page.text)
-        print(res)
+    pattern = r'name="captcha-id" value="([^"]*)"'
+    captcha_id = re.findall(pattern, login_page.text)
+    print(captcha_id)
+    pattern = r'id="captcha_image" src="([^"]*)"'
+    captcha_img = re.findall(pattern, login_page.text)
+    print(captcha_img)
+    data['captcha-id'] = captcha_id[0]
+    if data['captcha-id'] != '':
+        data['captcha-solution'] = get_captcha(captcha_img[0])    
+
+    m = MultipartEncoder(fields=data)
+    print("mmmmmmmm")
+    print(m.content_type)
+    print(m)
+    headers_douban['Content-Type'] = m.content_type
+    headers_douban['Sec-Fetch-Dest'] = 'empty'
+    headers_douban['Sec-Fetch-Mode'] = 'cors'
+    headers_douban['Sec-Fetch-Site'] = 'same-origin'
+    headers_douban['Accept-Encoding'] = 'gzip, deflate, br'
+    print(headers_douban)
+
+    
+    
+
+    login_page = session.post(post_url, data=m, headers=headers_douban)
+    print(33333333)
+    print(login_page.text)
+    
 
     
 def get_captcha(captcha_img_url):

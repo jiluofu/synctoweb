@@ -237,7 +237,7 @@ def login(username, password):
     # print(login_loop)
     pa = r'location\.replace\([\'"](.*?)[\'"]\)'
     loop_url = re.findall(pa, login_loop)[0]
-    # print(loop_url)
+    print(loop_url)
     # 此出还可以加上一个是否登录成功的判断，下次改进的时候写上
     login_index = session.get(loop_url, headers=headers)
     uuid = login_index.text
