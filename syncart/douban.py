@@ -197,7 +197,7 @@ def upload_img(img_file_path):
     # headers_douban['X-XSRF-TOKEN'] = requests.utils.dict_from_cookiejar(session.cookies)['XSRF-TOKEN']
 
     # post图片文件
-    login_page = session.post(post_url, data=data, files=files, headers=headers_douban, verify=False);
+    login_page = session.post(post_url, data=data, files=files, headers=headers_douban);
     print(login_page.text)
     res = json.loads(login_page.text)
     print(res)
@@ -445,8 +445,9 @@ def pub(file_parent_path, folder):
     pattern = r'id="captcha_image" src="([^"]*)"'
     captcha_img = re.findall(pattern, login_page.text)
     print(captcha_img)
-    data['captcha-id'] = captcha_id[0]
-    if data['captcha-id'] != '':
+    
+    if len(captcha_id) > 0:
+        data['captcha-id'] = captcha_id[0]
         data['captcha-solution'] = get_captcha(captcha_img[0])    
 
     m = MultipartEncoder(fields=data)
