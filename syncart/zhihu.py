@@ -95,7 +95,7 @@ def checkLogin():
 
 def getCookie():
 
-        url = 'https://www.zhihu.com/signup'
+        url = 'https://www.zhihu.com/signin'
         driver = webdriver.Chrome(chromedriver_path)
         driver.get(url)
         time.sleep(10)
