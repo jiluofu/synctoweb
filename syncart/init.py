@@ -132,7 +132,8 @@ def fetch_url(root_path, url, no_cover = False):
         img_src_tmp = imgs[i];
         if img_src_tmp.find('http:') < 0:
             img_src_tmp = 'http:' + img_src_tmp;
-
+        print(11111)
+        print(img_src_tmp)
         r = session.get(img_src_tmp, headers=headers_img)
         with open(img_dir_path + os.sep + img_file_name, 'wb') as f:
             f.write(r.content)
@@ -235,7 +236,7 @@ def fetch_mk(root_path, title, no_cover = False):
             img_file_name = re.findall(pattern, imgs[i])[0][2]
             print(333)
             print(img_src_tmp)
-            r = session.get(img_src_tmp)
+            r = session.get(img_src_tmp,headers=headers_img)
             with open(img_dir_path + os.sep + img_file_name, 'wb') as f:
                 f.write(r.content)
                 f.close()
