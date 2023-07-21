@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3.9
+#!python3
 # from syncart import  art
 from syncart import  init
 
@@ -84,9 +84,9 @@ for i in range(0, len(qsj)):
     qsj_folder_arr.append(qsj_folder)
 
 
-mpwx.pub(file_parent_path, folder, qsj_folder_arr, url)
-lofter.pub(file_parent_path, folder)
-zhihu.pub(file_parent_path, folder)
+# mpwx.pub(file_parent_path, folder, qsj_folder_arr, url)
+# lofter.pub(file_parent_path, folder)
+# zhihu.pub(file_parent_path, folder)
 # weibo.pub(file_parent_path, folder)
 douban.pub(file_parent_path, folder)
 

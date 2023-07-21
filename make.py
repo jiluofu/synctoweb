@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3.9
+#!python3
 # -*- coding: utf-8 -*-
 '''
 Required

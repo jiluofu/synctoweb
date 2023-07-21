@@ -39,6 +39,7 @@ tag = cf.get('mpwx', 'tag')
 
 agent = 'Mozilla/5.0 (Windows NT 5.1; rv:33.0) Gecko/20100101 Firefox/33.0'
 headers = {
+    'authority':'mp.weixin.qq.com',
     'Host': 'mp.weixin.qq.com',
     'Referer': 'https://mp.weixin.qq.com/cgi-bin/loginpage?t=wxm2-login&lang=zh_CN',
     'User-Agent': agent,
@@ -215,27 +216,54 @@ def upload_img(img_file_path):
     pattern = r'/([^/]*)$'
 
 
-    # print(token)
-    post_url = 'https://mp.weixin.qq.com/cgi-bin/filetransfer'
-    # print(post_url)
-    data = {
+    print(token)
+    print(111111111)
+    # img_file_path = '/Users/zhuxu/Downloads/51001-5f608c9a9c3ccc7d.png'
+    # img_file_path = img_file_path.replace('~', '\~')
+    
+    print(img_file_path)
+    post_url = 'https://mp.weixin.qq.com/cgi-bin/filetransfer?action=upload_material'
+    post_url += '&f=json'
+    post_url += '&scene=8'
+    post_url += '&writetype=doublewrite'
+    post_url += '&groupid=1'
+    post_url += '&ticket_id=momiaojushi'
+    post_url += '&ticket=' + ticket
+    post_url += '&svr_time=' + str(int(time.time()))
+    post_url += '&token=' + token
+    post_url += '&lang=zh_CN'
+    post_url += '&seq=' + str(int(time.time()) * 1000)
+    post_url += '&t=' + str(int(time.time() * 1000))
+    # post_url = 'https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=67_UHHcgjoBcjfm7AcCuKSd12d7BMsriRfwhuIYrphkqw838pJ5UbJTyIm0AXY43QSWTEazND7KJE2TRwGavuUMVsuaCBKvhjlU4o1cki-WJ-8N26c5_9TAN1yYSYQJYOdAFANCS'
+    print(post_url)
+    # post_url = 'https://mp.weixin.qq.com/cgi-bin/filetransfer?action=upload_material&f=json&scene=8&writetype=doublewrite&groupid=1&ticket_id=momiaojushi&ticket=65841cd9e82ad51f0c6795eb29d139703978472a&svr_time=1680058568&token=913431764&lang=zh_CN&seq=1680064610394&t=0.6926449705280695'
+    # data = {
 
-        'action': 'upload_material',
-        'f': 'json',
-        'writetype': 'doublewrite',
-        'groupid': '3',
-        'ticket_id': 'momiaojushi',
-        'ticket': ticket,
-        # 'svr_time': '1499588746',
-        'seq': '1'
-    }
+    #     'action': 'upload_material',
+    #     'f': 'json',
+    #     'writetype': 'doublewrite',
+    #     'groupid': '1',
+    #     'ticket_id': 'momiaojushi',
+    #     'ticket': ticket,
+    #     'svr_time': str(int(time.time())),
+    #     'token':token,
+    #     'lang':'zh_CN',
+    #     'seq': '1680059178489',
+    #     't':str(int(time.time() * 1000)),
+    #     'scene':'8'
+    # }
+    print(int(time.time() * 1000))
+
 
     files = {
-
+        # 'id':str(int(time.time())),
+        # 'name':'51001-5f608c9a9c3ccc7d.png',
+        # 'type':'image/png',
+        # 'size':'100224',
         'file': open(img_file_path, 'rb')
     }
 
-    login_page = session.post(post_url, data=data, files=files, headers=headers)
+    login_page = session.post(post_url, files=files, headers=headers)
     print(login_page.text)
     res = eval(login_page.text)
     if res['base_resp']['ret'] != 0:
@@ -345,7 +373,7 @@ def pub(file_parent_path, folder, qsj_folder_arr, url):
 
     print(token)
 
-    post_url = 'https://mp.weixin.qq.com/cgi-bin/operate_appmsg?t=ajax-response&sub=create&type=10&token=' + token + '&lang=zh_CN'
+    post_url = 'https://mp.weixin.qq.com/cgi-bin/operate_appmsg?t=ajax-response&sub=create&type=77&token=' + token + '&lang=zh_CN'
 
     mpwx_cover_url = upload_img(init.cover['origin_file_path'].replace('%20', ' '))
 
@@ -355,6 +383,38 @@ def pub(file_parent_path, folder, qsj_folder_arr, url):
     file_html_content = re.sub(r'<p>', '<p style="margin-top: 20px; margin-bottom: 20px;">', file_html_content)
 
     print(file_html_content)
+    # data = {
+
+    #     'token': token,
+    #     'lang': 'zh_CN',
+    #     'f': 'json',
+    #     'ajax': '1',
+    #     'random': t,
+    #     'AppMsgId': '',
+    #     'count': (len(qsj_folder_arr) + 1),
+    #     'title0': title,
+    #     'content0': file_html_content,
+    #     'digest0': '',
+    #     'author0': '摹喵居士',
+    #     'writerid0': '2912645',
+    #     'fileid0': '',
+    #     'cdn_url0': mpwx_cover_url,
+    #     'music_id0': '',
+    #     'video_id0': '',
+    #     'show_cover_pic0': '0',
+    #     'shortvideofileid0': '',
+    #     'vid_type0': '',
+    #     'need_open_comment0': '1',
+    #     'only_fans_can_comment0': '0',
+    #     'sourceurl0': '',
+    #     'fee0': '0',
+    #     'reprint_permit_type0': '1',
+    #     'copyright_type0': '1',
+    #     'original_article_type0': tag,
+    #     'can_reward0': '1',
+    #     'reward_wording0': '沽之哉，沽之哉！我待贾者也'
+
+    # }
     data = {
 
         'token': token,
@@ -363,28 +423,108 @@ def pub(file_parent_path, folder, qsj_folder_arr, url):
         'ajax': '1',
         'random': t,
         'AppMsgId': '',
-        'count': (len(qsj_folder_arr) + 1),
+        'count': 1,
+        'data_seq': 'null',
+        'operate_from': 'Chrome',
+        'isnew': 0,
+        'articlenum': 1,
+        'pre_timesend_set': 0,
+        'is_finder_video0': 0,
+        'finder_draft_id0': 0,
+        'applyori0': 0,
+        'ad_video_transition0': '',
+        'can_reward0': 1,
+        'pay_gifts_count0': 0,
+        'reward_reply_id0': '',
+        'related_video0': '',
+        'is_video_recommend0': -1,
         'title0': title,
-        'content0': file_html_content,
-        'digest0': '',
         'author0': '摹喵居士',
-        'writerid0': '2912645',
+        'writerid0': 2912645,
         'fileid0': '',
+        'digest0': '',
+        'auto_gen_digest0': 1,
+        'content0': file_html_content,
+        'sourceurl0': '',
+        'last_choose_cover_from0': 0,
+        'need_open_comment0': 1,
+        'only_fans_can_comment0': 0,
+        'only_fans_days_can_comment0': 0,
+        'reply_flag0': 5,
+        'not_pay_can_comment0': 0,
+        'open_fansmsg0': 0,
         'cdn_url0': mpwx_cover_url,
+        'cdn_235_1_url0': '',
+        'cdn_16_9_url0': '',
+        'cdn_1_1_url0': '',
+        'cdn_finder_url0':'', 
+        'cdn_video_url0': '',
+        'cdn_url_back0': '',
+        'crop_list0': '',
+        'app_cover_auto0': 0,
         'music_id0': '',
         'video_id0': '',
-        'show_cover_pic0': '0',
-        'shortvideofileid0': '',
+        'voteid0': '',
+        'voteismlt0':'' ,
+        'supervoteid0':'', 
+        'cardid0': '',
+        'cardquantity0': '',
+        'cardlimit0': '',
         'vid_type0': '',
-        'need_open_comment0': '1',
-        'only_fans_can_comment0': '0',
-        'sourceurl0': '',
-        'fee0': '0',
-        'reprint_permit_type0': '1',
-        'copyright_type0': '1',
-        'original_article_type0': tag,
-        'can_reward0': '1',
-        'reward_wording0': '沽之哉，沽之哉！我待贾者也'
+        'show_cover_pic0': 0,
+        'shortvideofileid0': '',
+        'copyright_type0': 1,
+        'is_cartoon_copyright0': 0,
+        'copyright_img_list0': '{"max_width":578,"img_list":[]}',
+        'releasefirst0': '',
+        'platform0': '',
+        'reprint_permit_type0': '',
+        'allow_fast_reprint0': 0,
+        'allow_reprint0': 0,
+        'allow_reprint_modify0': 0,
+        'original_article_type0': '文化_文学',
+        'ori_white_list0': '{"white_list":[]}',
+        'video_ori_status0': '',
+        'hit_nickname0': '',
+        'free_content0': '',
+        'fee0': 0,
+        'ad_id0': '',
+        'guide_words0': '',
+        'is_share_copyright0': 0,
+        'share_copyright_url0': '',
+        'source_article_type0': '',
+        'reprint_recommend_title0': '',
+        'reprint_recommend_content0': '',
+        'share_page_type0': 0,
+        'share_imageinfo0': '{"list":[]}',
+        'share_video_id0': '',
+        'dot0': '{}',
+        'share_voice_id0': '',
+        'insert_ad_mode0': '',
+        'categories_list0': '[]',
+        'compose_info0': '{"list":[{"blockIdx":1,"imgList":[],"text":""}]}',
+        'is_pay_subscribe0': 0,
+        'pay_fee0': '',
+        'pay_preview_percent0': '',
+        'pay_desc0': '',
+        'pay_album_info0': '',
+        'appmsg_album_info0': '{"appmsg_album_infos":[]}',
+        'can_insert_ad0': 1,
+        'audio_info0': '{"audio_infos":[]}',
+        'danmu_pub_type0_0': 0,
+        'is_set_sync_to_finder0': 0,
+        'sync_to_finder_cover0': '',
+        'sync_to_finder_cover_source0': '',
+        'import_to_finder0': 0,
+        'import_from_finder_export_id0': '',
+        'style_type0': 3,
+        'sticker_info0': '{"is_stickers":0,"common_stickers_num":0,"union_stickers_num":0,"sticker_id_list":[],"has_invalid_sticker":0}',
+        'new_pic_process0': 0,
+        'req': '{"idx_infos":[{"save_old":0}]}',
+        'remind_flag': 'null',
+        'is_auto_type_setting': 3,
+        'save_type': 0,
+        'isneedsave': 0
 
     }
 

@@ -29,6 +29,7 @@ import json
 import string
 import configparser
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 cf = configparser.RawConfigParser()
@@ -98,7 +99,9 @@ def checkLogin():
 def getCookie():
 
     url = 'https://www.douban.com/'
-    driver = webdriver.Chrome(chromedriver_path)
+    service = Service(executable_path = "chromedriver")
+    driver = webdriver.Chrome(service=service)
+    # driver = webdriver.Chrome(chromedriver_path)
     driver.get(url)
     time.sleep(5)
     # print(username)
