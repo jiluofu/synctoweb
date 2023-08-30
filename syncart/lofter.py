@@ -21,9 +21,12 @@ import os.path
 from syncart import init
 import configparser
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 conf_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/syncart/sync.conf'
 chromedriver_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/chromedriver'
+chrome_path = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
 cf = configparser.RawConfigParser()
 cf.read(os.path.dirname(__file__) + os.path.sep + 'sync.conf')
@@ -86,7 +89,9 @@ def checkLogin():
 def getCookie():
 
     url = 'http://www.lofter.com/'
-    driver = webdriver.Chrome(chromedriver_path)
+    chrome_options = Options()
+    service = Service(executable_path = chromedriver_path)
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     driver.get(url)
     
 

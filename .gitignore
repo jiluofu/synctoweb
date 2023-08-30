@@ -3,3 +3,4 @@ syncart/sync.conf
 syncart/tag.conf
 *.jpg
 cookies_*
+*.DS_Store*

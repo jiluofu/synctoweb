@@ -29,6 +29,8 @@ import json
 import string
 import configparser
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 cf = configparser.RawConfigParser()
 cf.read(os.path.dirname(__file__) + os.path.sep + 'sync.conf')
@@ -96,7 +98,9 @@ def checkLogin():
 def getCookie():
 
         url = 'https://www.zhihu.com/signin'
-        driver = webdriver.Chrome(chromedriver_path)
+        chrome_options = Options()
+        service = Service(executable_path = chromedriver_path)
+        driver = webdriver.Chrome(service=service, options=chrome_options)
         driver.get(url)
         time.sleep(10)
         # print(username)
