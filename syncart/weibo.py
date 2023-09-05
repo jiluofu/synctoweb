@@ -32,6 +32,8 @@ import json
 import string
 import configparser
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 conf_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/syncart/sync.conf'
 chromedriver_path = '/Users/zhuxu/Documents/mmjstool/synctoweb/chromedriver'
@@ -48,7 +50,7 @@ password = cf.get('weibo', 'password')
 cookie = cf.get('weibo', 'cookie')
 
 # 构造 Request headers
-agent = 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0'
+agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
 headers = {
     'User-Agent': agent
 }
@@ -67,13 +69,13 @@ def initial():
 def checkLogin():
 
     # url = 'http://login.sina.com.cn/signup/signin.php'
-    url = 'https://weibo.com/jiluofu/home?wvr=5'
+    url = 'https://card.weibo.com/article/v3/editor#/history'
     headers_weibo = {
 
-        'Host': 'www.weibo.com',
+        # 'Host': 'www.weibo.com',
         # 'Host': 'login.sina.com.cn',
-        # 'Origin': 'https://www.weibo.com',
-        # 'Referer': 'https://www.weibo.com',
+        'Origin': 'https://card.weibo.com',
+        'Referer': 'https://card.weibo.com/article/v3/editor',
         'User-Agent': agent,
         # 'Content-Type': 'text/html;charset=UTF-8',
         'Cookie': cf.get('weibo', 'cookie')
@@ -83,7 +85,7 @@ def checkLogin():
 
 
     # 通过get_url，使得session获得专栏的cookie，里面有X-XSRF-TOKEN
-    login_page = session.get(url, headers=headers_weibo, allow_redirects=False);
+    login_page = session.get(url, headers=headers_weibo, allow_redirects=True);
     print(login_page)
     
     pattern = r'摹喵居士'
@@ -98,7 +100,9 @@ def checkLogin():
 def getCookie():
 
     url = 'https://www.weibo.com'
-    driver = webdriver.Chrome(chromedriver_path)
+    chrome_options = Options()
+    service = Service(executable_path = chromedriver_path)
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     driver.get(url)
     # time.sleep(5)
     # # print(username)
@@ -258,7 +262,8 @@ def upload_img(img_file):
         'Origin': 'https://card.weibo.com',
         'Referer': 'https://card.weibo.com/article/v3/editor',
         'User-Agent': agent,
-        # 'Cookie': cf.get('weibo', 'cookie')
+        # 'Cookie': 'SINAGLOBAL=2313135612144.472.1677646063113; login_sid_t=862d75a293eb548301901b2c0ec7fc3b; cross_origin_proto=SSL; _s_tentry=weibo.com; Apache=4358718021022.239.1686720625343; ULV=1686720625345:2:1:1:4358718021022.239.1686720625343:1677646063114; SSOLoginState=1686720662; UOR=,,login.sina.com.cn; SCF=AsEiDlvt-k7zzH0WdkBGSg5RCAtfxwROGmf2wHKBmR5b0WFEz9zAiVKZrLSxwqAJwuG5k5AbACAknWg9NwMHz4A.; SUB=_2A25J8uYgDeRhGedI7lAS-SnKzTiIHXVqhlDorDV8PUNbmtANLUXSkW9NVyUYGFQE4cmKnJDF7y3YoPakQHiPUZ2c; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWReuIPujpVB3nT0hI9XpSv5JpX5KzhUgL.Fo2cSKz01KMcSoB2dJLoIEBLxKqL1K2LBo.LxK-L1KqLBo-LxK-LBo2L1h-LxK-LBKeLB-zt; ALF=1725417968; UPSTREAM-CARD=; ustat=__111.206.214.27_1693891944_0.82749200',
+        'Cookie': cf.get('weibo', 'cookie')
     }
 
     post_url = 'https://picupload.weibo.com/interface/pic_upload.php?mime=image%2Fjpeg&marks=1&app=miniblog&url=0&markpos=1&logo=&nick='
@@ -295,8 +300,8 @@ def get_img_file_new_url(file_parent_path, folder):
 
 def pub(file_parent_path, folder):
 
-    login(username, password)
-    # initial()
+    # login(username, password)
+    initial()
 
     img_file_new_url = get_img_file_new_url(file_parent_path, folder)
     init.get_folder_imgs(file_parent_path, folder, img_file_new_url, 'weibo')
@@ -320,30 +325,36 @@ def pub(file_parent_path, folder):
 
     headers_art = {
 
-        'Host': 'www.weibo.com',
         'Referer': 'https://card.weibo.com/article/v3/editor',
         'User-Agent': agent,
         'Origin': 'https://card.weibo.com',
         'Content-Type': 'application/x-www-form-urlencoded;',
-        # 'Cookie': cf.get('weibo', 'cookie')
+        # 'Cookie': 'SINAGLOBAL=2313135612144.472.1677646063113; login_sid_t=862d75a293eb548301901b2c0ec7fc3b; cross_origin_proto=SSL; _s_tentry=weibo.com; Apache=4358718021022.239.1686720625343; ULV=1686720625345:2:1:1:4358718021022.239.1686720625343:1677646063114; SSOLoginState=1686720662; UOR=,,login.sina.com.cn; SCF=AsEiDlvt-k7zzH0WdkBGSg5RCAtfxwROGmf2wHKBmR5b0WFEz9zAiVKZrLSxwqAJwuG5k5AbACAknWg9NwMHz4A.; SUB=_2A25J8uYgDeRhGedI7lAS-SnKzTiIHXVqhlDorDV8PUNbmtANLUXSkW9NVyUYGFQE4cmKnJDF7y3YoPakQHiPUZ2c; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWReuIPujpVB3nT0hI9XpSv5JpX5KzhUgL.Fo2cSKz01KMcSoB2dJLoIEBLxKqL1K2LBo.LxK-L1KqLBo-LxK-LBo2L1h-LxK-LBKeLB-zt; ALF=1725417968; UPSTREAM-CARD=; ustat=__111.206.214.27_1693891944_0.82749200',
+        'Cookie': cf.get('weibo', 'cookie')
     }
 
     data = {
 
-        'title': title,
-        'cover': weibo_cover_url,
-        'content': file_html_content,
-        'type': 'draft'
+        # 'title': title,
+        # 'cover': weibo_cover_url,
+        # 'content': file_html_content,
+        # 'type': 'draft'
     }
 
-    print(data['content'])
+    data = {
+
+        '_rid':'aaaassss',
+    }
+
+    # print(data['content'])
 
     # post_url = 'https://www.weibo.com/ttarticle/p/aj/draft?ajwvr=6'
-    post_url = 'https://card.weibo.com/article/v3/aj/editor/draft/create'
+    post_url = 'https://card.weibo.com/article/v3/aj/editor/draft/create?uid=1652397664&_rid=aaaassss'
     login_page = session.post(post_url, data=data, headers=headers_art)
 
-    print(data)
-    # print(login_page.text)
+    # print(data)
+    print(1111111)
+    print(login_page)
     res = json.loads(login_page.text)
     print(res['msg'])
     
