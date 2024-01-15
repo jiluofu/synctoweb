@@ -378,9 +378,9 @@ def pub(file_parent_path, folder, qsj_folder_arr, url):
     mpwx_cover_url = upload_img(init.cover['origin_file_path'].replace('%20', ' '))
 
     print(init.cover['origin_file_path'])
-    file_html_content = file_html_content + add_qr_html()
-    file_html_content = re.sub(r'[\n]', '', file_html_content)
-    file_html_content = re.sub(r'<p>', '<p style="margin-top: 20px; margin-bottom: 20px;">', file_html_content)
+    # file_html_content = file_html_content + add_qr_html()
+    # file_html_content = re.sub(r'[\n]', '', file_html_content)
+    # file_html_content = re.sub(r'<p>', '<p style="margin-top: 20px; margin-bottom: 20px;">', file_html_content)
 
     print(file_html_content)
     # data = {
@@ -433,7 +433,7 @@ def pub(file_parent_path, folder, qsj_folder_arr, url):
         'finder_draft_id0': 0,
         'applyori0': 0,
         'ad_video_transition0': '',
-        'can_reward0': 1,
+        'can_reward0': 0,
         'pay_gifts_count0': 0,
         'reward_reply_id0': '',
         'related_video0': '',
